@@ -9,6 +9,7 @@ public class FreePane extends JPanel {
 	
 	public FreePane() {
 		setBackground(Color.LIGHT_GRAY);
+		
 
 	}
 }
