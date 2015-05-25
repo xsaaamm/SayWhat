@@ -16,6 +16,8 @@ import java.awt.event.ActionEvent;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.SystemColor;
+import javax.swing.UIManager;
 
 
 public class Main extends JFrame {
@@ -58,83 +60,83 @@ public class Main extends JFrame {
 		setUndecorated(true);
 		//setContentPane(mainPane);
 		getContentPane().add(mainPane, BorderLayout.CENTER);
-		mainPane.setBackground(Color.BLACK);
+		mainPane.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
 		mainPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		mainPane.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		mainPane.setLayout(new BorderLayout(0, 0));
 
 		
 		JPanel topPanel = new JPanel();
-		topPanel.setBackground(Color.BLACK);
+		topPanel.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
 		mainPane.add(topPanel, BorderLayout.NORTH);
 		topPanel.setLayout(new GridLayout(0, 18, 0, 0));
 		
 		JPanel panel_9 = new JPanel();
-		panel_9.setBackground(Color.BLACK);
+		panel_9.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
 		topPanel.add(panel_9);
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.BLACK);
+		panel.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
 		topPanel.add(panel);
 		
 		JPanel panel_6 = new JPanel();
-		panel_6.setBackground(Color.BLACK);
+		panel_6.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
 		topPanel.add(panel_6);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(Color.BLACK);
+		panel_1.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
 		topPanel.add(panel_1);
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(Color.BLACK);
+		panel_2.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
 		topPanel.add(panel_2);
 		
 		JPanel panel_3 = new JPanel();
-		panel_3.setBackground(Color.BLACK);
+		panel_3.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
 		topPanel.add(panel_3);
 		
 		JPanel panel_4 = new JPanel();
-		panel_4.setBackground(Color.BLACK);
+		panel_4.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
 		topPanel.add(panel_4);
 		
 		JPanel panel_5 = new JPanel();
-		panel_5.setBackground(Color.BLACK);
+		panel_5.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
 		topPanel.add(panel_5);
 		
 		JPanel panel_7 = new JPanel();
-		panel_7.setBackground(Color.BLACK);
+		panel_7.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
 		topPanel.add(panel_7);
 		
 		JPanel panel_8 = new JPanel();
-		panel_8.setBackground(Color.BLACK);
+		panel_8.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
 		topPanel.add(panel_8);
 		
 		JPanel panel_10 = new JPanel();
-		panel_10.setBackground(Color.BLACK);
+		panel_10.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
 		topPanel.add(panel_10);
 		
 		JPanel panel_11 = new JPanel();
-		panel_11.setBackground(Color.BLACK);
+		panel_11.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
 		topPanel.add(panel_11);
 		
 		JPanel panel_12 = new JPanel();
-		panel_12.setBackground(new Color(0, 0, 0));
+		panel_12.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
 		topPanel.add(panel_12);
 		
 		JPanel panel_13 = new JPanel();
-		panel_13.setBackground(new Color(0, 0, 0));
+		panel_13.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
 		topPanel.add(panel_13);
 		
 		JPanel panel_14 = new JPanel();
-		panel_14.setBackground(new Color(0, 0, 0));
+		panel_14.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
 		topPanel.add(panel_14);
 		
 		JButton btnSave = new JButton("Save");
-		btnSave.setBackground(new Color(255, 0, 0));
+		//btnSave.setBackground(new Color(255, 0, 0));
 		topPanel.add(btnSave);
 		
 		JButton btnLogout = new JButton("Logout");
-		btnLogout.setBackground(new Color(30, 144, 255));
+		//btnLogout.setBackground(new Color(30, 144, 255));
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//------------------------------------------------->>>Save
@@ -153,7 +155,7 @@ public class Main extends JFrame {
 		topPanel.add(btnLogout);
 		
 		JButton btnQuit = new JButton("Quit");
-		btnQuit.setBackground(new Color(154, 205, 50));
+		//btnQuit.setBackground(new Color(154, 205, 50));
 		btnQuit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//------------------------------------------------->>>Save
@@ -163,30 +165,38 @@ public class Main extends JFrame {
 		topPanel.add(btnQuit);
 		
 		JTabbedPane tabbedMain = new JTabbedPane(JTabbedPane.TOP);
-		tabbedMain.setBackground(new Color(255, 255, 255));
+		tabbedMain.setBackground(Color.LIGHT_GRAY);
 		mainPane.add(tabbedMain, BorderLayout.CENTER);
+		homepane.setBackground(SystemColor.window);
 	
 		tabbedMain.addTab("Home", null, homepane, null);
 		tabbedMain.setForegroundAt(0, new Color(0, 0, 0));
-		tabbedMain.setBackgroundAt(0, new Color(255, 255, 255));
+		tabbedMain.setBackgroundAt(0, SystemColor.activeCaption);
+		freepane.setBackground(SystemColor.window);
 		
 		tabbedMain.addTab("Free Mode", null, freepane, null);
-		tabbedMain.setBackgroundAt(1, new Color(255, 255, 255));
+		tabbedMain.setBackgroundAt(1, SystemColor.activeCaption);
+		practicepane.setBackground(SystemColor.window);
 		
 		tabbedMain.addTab("Practice Mode", null, practicepane, null);
-		tabbedMain.setBackgroundAt(2, new Color(255, 255, 255));
+		tabbedMain.setBackgroundAt(2, SystemColor.activeCaption);
+		challengepane.setBackground(SystemColor.window);
 		
 		tabbedMain.addTab("Challenge Mode", null, challengepane, null);
-		tabbedMain.setBackgroundAt(3, new Color(255, 255, 255));
+		tabbedMain.setBackgroundAt(3, SystemColor.activeCaption);
+		recordspane.setBackground(SystemColor.window);
 		
 		tabbedMain.addTab("Records", null, recordspane, null);
-		tabbedMain.setBackgroundAt(4, new Color(255, 255, 255));
+		tabbedMain.setBackgroundAt(4, SystemColor.activeCaption);
+		settingspane.setBackground(SystemColor.window);
 		
 		tabbedMain.addTab("Settings", null, settingspane, null);
-		tabbedMain.setBackgroundAt(5, new Color(255, 255, 255));
+		tabbedMain.setBackgroundAt(5, SystemColor.activeCaption);
+		helppane.setBackground(SystemColor.window);
 		
 		tabbedMain.addTab("Help", null, helppane, null);
-		tabbedMain.setBackgroundAt(6, Color.WHITE);
+		tabbedMain.setForegroundAt(6, SystemColor.inactiveCaptionText);
+		tabbedMain.setBackgroundAt(6, SystemColor.activeCaption);
 
 	}
 }
