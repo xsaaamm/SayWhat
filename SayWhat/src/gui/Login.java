@@ -184,7 +184,7 @@ public class Login extends JFrame{
 		//--Sound Bar Image 	
 		lbSoundBar = new JLabel("");
 		lbSoundBar.setHorizontalAlignment(SwingConstants.CENTER);
-		lbSoundBar.setIcon(new ImageIcon("C:\\eclipse\\workspace\\Say What\\img\\lblSoundBar.png"));
+		lbSoundBar.setIcon(new ImageIcon("C:\\Users\\barretts\\github\\saywhat\\saywhat\\SayWhat\\img\\lblSoundBar.png"));
 		lbSoundBar.setBounds(0, 389, 707, 192);
 		frmLoginPage.getContentPane().add(lbSoundBar);
 		
