@@ -13,8 +13,6 @@ public class ChallengePane extends JPanel {
 	public ChallengePane() {
 		setBackground(new Color(0, 0, 0));
 
-		//hefkjdsfds
-		//fdsfjdsfkdsfjlds
 	}
 
 }
