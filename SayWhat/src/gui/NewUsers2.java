@@ -30,9 +30,8 @@ public class NewUsers2 extends JFrame {
 	private JTextField tFemail;
 	private JTextField tFphone;
 	private JButton btnSubmit;
-	static NewUsers2 newUsers2 = new NewUsers2(); 
 	private String firstname, lastname, username, pass, passconfirm;
-
+	JFrame frame;
 	/**
 	 * Launch the application.
 	 */
@@ -40,7 +39,8 @@ public class NewUsers2 extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					newUsers2.setVisible(true);
+					NewUsers2 newusers2 = new NewUsers2();
+					newusers2.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -144,7 +144,7 @@ public class NewUsers2 extends JFrame {
 			public void actionPerformed(ActionEvent arg0){
 				try {
 					//add to db
-					newUsers2.dispose();
+					frame.dispose();
 					Login login = new Login();
 					login.setVisible(true);
 					login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

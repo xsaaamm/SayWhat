@@ -140,13 +140,17 @@ public class NewUsers extends JFrame {
 		contentPane.add(btnNext); 
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0){
-				frame.dispose();
-				NewUsers2 newusers2 = new NewUsers2();
-				newusers2.setVisible(true);
-				newusers2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				String test = getUsername();
-				System.out.println(test);
-				//add firstname, lastname, username, therapist, picture
+				try {
+					frame.dispose();
+					NewUsers2 newusers2 = new NewUsers2();
+					newusers2.setVisible(true);
+					//newusers2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					//String test = getUsername();
+					//System.out.println(test);
+					//add firstname, lastname, username, therapist, picture
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Could not go on");
+				}
 			}
 		});
 		

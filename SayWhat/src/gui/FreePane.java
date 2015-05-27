@@ -102,7 +102,8 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 		int bufferSize = 1024;
 		int overlap = 0;
 		
-		textArea.append("Started listening with " + Shared.toLocalString(mixer.getMixerInfo().getName()) + "\n");
+		//textArea.append("Started listening with " + Shared.toLocalString(mixer.getMixerInfo().getName()) + "\n");
+		textArea.append("You may now begin.  Started listening with " + Shared.toLocalString(mixer.getMixerInfo().getName()) + "\n");
 
 		final AudioFormat format = new AudioFormat(sampleRate, 16, 1, true,
 				true);

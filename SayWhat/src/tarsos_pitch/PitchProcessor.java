@@ -58,7 +58,7 @@ public class PitchProcessor implements AudioProcessor {
 		 */
 		public PitchDetector getDetector(float sampleRate,int bufferSize){
 			PitchDetector detector;
-			detector = new Yin(sampleRate, bufferSize);
+			detector = new McLeodPitchMethod(sampleRate, bufferSize);
 			
 		/**	if (this == MPM ) {
 				detector = new McLeodPitchMethod(sampleRate, bufferSize);

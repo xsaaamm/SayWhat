@@ -67,21 +67,6 @@ public class PitchDetectorExample extends JFrame implements PitchDetectionHandle
 	private Mixer currentMixer;
 	
 	private PitchEstimationAlgorithm algo;	
-	private ActionListener algoChangeListener = new ActionListener(){
-		@Override
-		public void actionPerformed(final ActionEvent e) {
-			String name = e.getActionCommand();
-			PitchEstimationAlgorithm newAlgo = PitchEstimationAlgorithm.valueOf(name);
-			algo = newAlgo;
-			try {
-				setNewMixer(currentMixer);
-			} catch (LineUnavailableException e1) {
-				e1.printStackTrace();
-			} catch (UnsupportedAudioFileException e1) {
-				e1.printStackTrace();
-			}
-	}};
-
 	public PitchDetectorExample() {
 		this.setLayout(new GridLayout(0, 1));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -105,11 +90,11 @@ public class PitchDetectorExample extends JFrame implements PitchDetectionHandle
 					}
 				});
 		
-		algo = PitchEstimationAlgorithm.YIN;
+		algo = PitchEstimationAlgorithm.MPM;
 		
-		JPanel pitchDetectionPanel = new PitchDetectionPanel(algoChangeListener);
+		//JPanel pitchDetectionPanel = new PitchDetectionPanel(algoChangeListener);
 		
-		add(pitchDetectionPanel);
+		//add(pitchDetectionPanel);
 	
 		
 		textArea = new JTextArea();

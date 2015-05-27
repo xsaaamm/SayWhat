@@ -49,7 +49,7 @@ public class InputPanel extends JPanel {
 	
 	public InputPanel(){
 		super(new BorderLayout());
-		this.setBorder(new TitledBorder("1. Choose a microphone input"));
+		this.setBorder(new TitledBorder("Choose a microphone input"));
 		JPanel buttonPanel = new JPanel(new GridLayout(0,1));
 		ButtonGroup group = new ButtonGroup();
 		for(Mixer.Info info : Shared.getMixerInfo(false, true)){
