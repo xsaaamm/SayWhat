@@ -1,37 +1,38 @@
 package gui;
-
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
 import java.awt.BorderLayout;
-
 import javax.swing.JComboBox;
-import javax.swing.JTextField;
 import javax.swing.JList;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import java.awt.Color;
-import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
 import java.awt.SystemColor;
 
 public class displayOptionsPanel extends JPanel {
 
+	private static final long serialVersionUID = 8605968659345501294L;
 	/**
 	 * Create the panel.
 	 */
 	public displayOptionsPanel() {
-		setBackground(SystemColor.scrollbar);
+		setBackground(SystemColor.WHITE);
+		setLayout(new BorderLayout(0, 0));
 		
 		String[] displayOptions = {"Choose files to display...","This Session","Last Session","First Session","All"};
-		JComboBox comboBox = new JComboBox(displayOptions);
-		setLayout(new BorderLayout(0, 0));
+		String[] files = {"File 1", "File 2", "File 3", "File 4","File 5", "File 6", "File 7", "File 8", 
+							"File 9", "File 10", "File 7", "File 8", "File 9", "File 10", "File 7", "File 8", "File 9", "File 10"};
+		
+		JComboBox<String> comboBox = new JComboBox<>(displayOptions);
 		add(comboBox, BorderLayout.NORTH);
 		
-		JPanel panel = new JPanel();
-		add(panel, BorderLayout.CENTER);
+		JList<String> list = new JList<>(files);
+		list.setVisibleRowCount(-1);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.setLayoutOrientation(JList.VERTICAL);
 		
-		JList list = new JList();
-		panel.add(list);
+		JScrollPane listscroll = new JScrollPane(list);
+		add(listscroll, BorderLayout.CENTER);
+		listscroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 	}
 

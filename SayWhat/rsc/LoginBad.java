@@ -16,7 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-public class Login extends JFrame{
+public class LoginBad extends JFrame{
 
 	private static final long serialVersionUID = 3317897313713510859L;
 	JFrame frmLoginPage;
@@ -161,16 +161,16 @@ public class Login extends JFrame{
 						String usernameFieldValue = usernameField.getText();
 						currentUser.setLoggedIn(true);
 						try{
-							String query2 = "SELECT id from usernames WHERE username=?";
-							PreparedStatement pst2 = connection.prepareStatement(query);
+							String query2 = "SELECT * from usernames WHERE username=?";
+							PreparedStatement pst2 = connection.prepareStatement(query2);
 							pst2.setString(1, usernameField.getText());
-							ResultSet result2 = pst2.executeQuery();
-							int countq = 0;
-							while (result.next()){
-								countq++;
-							}
+							ResultSet id = pst2.executeQuery();
+							while (id.next()){
+								int idVal = id.getInt(id);
+								System.out.println();
+							};
 						}catch(Exception e){
-							
+							System.out.println("no");
 						}
 						
 						//JOptionPane.showMessageDialog(null, "Username and Password is correct");						

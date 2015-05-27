@@ -1,4 +1,6 @@
-package gui;
+package gui.rsc;
+import gui.Login;
+
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -61,6 +63,7 @@ public class NewUsers2 extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		frame.add(contentPane);
 		
 		lblSignUp = new JLabel("Sign Up!!");
 		lblSignUp.setBounds(0, 0, 332, 43);
@@ -148,7 +151,7 @@ public class NewUsers2 extends JFrame {
 					Login login = new Login();
 					login.setVisible(true);
 					login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					login.frmLoginPage.setVisible(true);
+					//login.frmLoginPage.setVisible(true);
 					JOptionPane.showMessageDialog(null, "User added, your username is:" + username);
 				} catch (Exception e) {
 					e.printStackTrace();

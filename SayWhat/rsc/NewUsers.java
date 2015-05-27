@@ -1,4 +1,4 @@
-package gui;
+package gui.rsc;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Color;
@@ -15,6 +15,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.JLayeredPane;
 
 public class NewUsers extends JFrame {
 
@@ -59,34 +60,38 @@ public class NewUsers extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JLayeredPane layeredPane = new JLayeredPane();
+		layeredPane.setBounds(0, 0, 1, 1);
+		contentPane.add(layeredPane);
+		
 		lblSignUp = new JLabel("Sign Up!!");
 		lblSignUp.setBounds(0, 0, 332, 43);
+		layeredPane.add(lblSignUp);
 		lblSignUp.setForeground(new Color(154, 205, 50));
 		lblSignUp.setBackground(Color.BLACK);
 		lblSignUp.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblSignUp.setHorizontalAlignment(SwingConstants.CENTER);
-		contentPane.add(lblSignUp);
 		
 		lblFName = new JLabel("First Name: ");
+		lblFName.setBounds(0, 0, 143, 14);
+		layeredPane.add(lblFName);
 		lblFName.setForeground(Color.WHITE);
-		lblFName.setBounds(21, 79, 143, 14);
-		contentPane.add(lblFName);
 		
 		textFieldCFname = new JTextField();
-		textFieldCFname.setBounds(21, 92, 296, 20);
-		contentPane.add(textFieldCFname);
+		textFieldCFname.setBounds(0, 0, 296, 20);
+		layeredPane.add(textFieldCFname);
 		textFieldCFname.setColumns(10);
+		
+		lblChildsLName = new JLabel("Last Name: ");
+		lblChildsLName.setBounds(0, 0, 143, 14);
+		layeredPane.add(lblChildsLName);
+		lblChildsLName.setForeground(Color.WHITE);
 		//Textfield action listener
 		textFieldCFname.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				firstname = textFieldCFname.getText();
 			}
 		});
-		
-		lblChildsLName = new JLabel("Last Name: ");
-		lblChildsLName.setForeground(Color.WHITE);
-		lblChildsLName.setBounds(21, 123, 143, 14);
-		contentPane.add(lblChildsLName);
 		
 		textFieldCLName = new JTextField();
 		textFieldCLName.setColumns(10);

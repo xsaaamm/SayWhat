@@ -34,90 +34,88 @@ public class ButtonPanel extends JPanel {
 
 
 	private static final long serialVersionUID = -1869535166207654639L;
-	private JTextField textField;
+	private JTextField tFieldFileName;
+	private JTextField textFieldFileDate;
+	private JTextField tFFileName;
+	private JTextField tFFileLength;
 	
 	public ButtonPanel(){
 		setBorder(new TitledBorder("Play Options"));
-		setLayout(new GridLayout(3, 1, 0, 0));
+		setLayout(new GridLayout(3, 0, 0, 0));
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setLayout(new GridLayout(2, 0, 0, 0));
+		//JPanel fileNamePanel = new JPanel();
+		//fileNamePanel.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JPanel audioButtonsPanel = new JPanel();
+		audioButtonsPanel.setLayout(new GridLayout(2, 0, 0, 0));
 		
 		JButton btnPlay = new JButton("Play");
+		JButton btnPause = new JButton("Pause");	
+		JButton btnStop = new JButton("Stop");		
+		JButton btnRecord = new JButton("Record");
 		
-		JButton btnNewButton_1 = new JButton("Pause");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		
-		JButton btnNewButton = new JButton("Stop");
-		
-		JButton btnNewButton_2 = new JButton("Record");
-		
-		JPanel panel_1 = new JPanel();
-		
-		textField = new JTextField();
-		textField.setHorizontalAlignment(SwingConstants.LEFT);
-		textField.setEditable(false);
-		textField.setColumns(30);
-		
-		JButton btnNewButton_3 = new JButton("Browse");
-		btnNewButton_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 438, GroupLayout.PREFERRED_SIZE)
-				.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 438, GroupLayout.PREFERRED_SIZE)
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)
-					.addGap(92))
-		);
-		
-		String[] displayOptions = {"Choose files to display...","This Session","Last Session","First Session","All"};
-		//comboBox.setSelectedIndex(5);
-		//comboBox.addActionListener((ActionListener) this);
-		
-		
-		JLabel lblNewLabel = new JLabel("Upload New File");
-		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1.setHorizontalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup()
+		JPanel uploadPanel = new JPanel();
+		tFieldFileName = new JTextField();
+		tFieldFileName.setHorizontalAlignment(SwingConstants.LEFT);
+		tFieldFileName.setEditable(true);
+		tFieldFileName.setColumns(30);
+		JButton btnBrowse = new JButton("Browse");
+		setLayout(new GridLayout(0, 1, 0, 0));
+		JLabel uploadLabel = new JLabel("Upload New File");
+		GroupLayout gl_uploadPanel = new GroupLayout(uploadPanel);
+		gl_uploadPanel.setHorizontalGroup(
+			gl_uploadPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_uploadPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addComponent(textField, GroupLayout.PREFERRED_SIZE, 338, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_uploadPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_uploadPanel.createSequentialGroup()
+							.addComponent(tFieldFileName, GroupLayout.PREFERRED_SIZE, 338, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnNewButton_3))
-						.addComponent(lblNewLabel))
+							.addComponent(btnBrowse))
+						.addComponent(uploadLabel))
 					.addContainerGap(17, Short.MAX_VALUE))
 		);
-		gl_panel_1.setVerticalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup()
+		gl_uploadPanel.setVerticalGroup(
+			gl_uploadPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_uploadPanel.createSequentialGroup()
 					.addGap(17)
-					.addComponent(lblNewLabel)
+					.addComponent(uploadLabel)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnNewButton_3, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_uploadPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(tFieldFileName, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnBrowse, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(25, Short.MAX_VALUE))
 		);
-		panel_1.setLayout(gl_panel_1);
-		panel_2.setLayout(new GridLayout(0, 4, 0, 0));
-		panel_2.add(btnPlay);
-		panel_2.add(btnNewButton_1);
-		panel_2.add(btnNewButton);
-		panel_2.add(btnNewButton_2);
-		setLayout(groupLayout);
+		uploadPanel.setLayout(gl_uploadPanel);
+		setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JPanel songInfoPanel = new JPanel();
+		add(songInfoPanel);
+		songInfoPanel.setLayout(new BoxLayout(songInfoPanel, BoxLayout.X_AXIS));
+		songInfoPanel.setLayout(new GridLayout(3, 0, 0, 0));
+		
+		tFFileName = new JTextField("File name: AudioFile1");
+		songInfoPanel.add(tFFileName);
+		tFFileName.setColumns(10);
+		tFFileName.setEditable(false);
+		
+		tFFileLength = new JTextField("File Length: 3:23");
+		songInfoPanel.add(tFFileLength);
+		tFFileLength.setColumns(10);
+		tFFileLength.setEditable(false);
+		
+		textFieldFileDate = new JTextField(" Date Recorded: Null");
+		textFieldFileDate.setEditable(false);
+		songInfoPanel.add(textFieldFileDate);
+		textFieldFileDate.setColumns(10);
+		
+		audioButtonsPanel.setLayout(new GridLayout(0, 4, 0, 0));
+		audioButtonsPanel.add(btnPlay);
+		audioButtonsPanel.add(btnPause);
+		audioButtonsPanel.add(btnStop);
+		audioButtonsPanel.add(btnRecord);
+		add(audioButtonsPanel);
+		add(uploadPanel);
 		
 
 	}
