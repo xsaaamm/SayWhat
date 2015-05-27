@@ -28,6 +28,8 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
+import java.awt.FlowLayout;
+import javax.swing.JButton;
 
 public class FreePane extends JPanel implements PitchDetectionHandler {
 
@@ -58,8 +60,22 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 		setBackground(Color.LIGHT_GRAY);
 		this.setLayout(new GridLayout(0, 1));
 		
+		JPanel panel = new JPanel();
+		add(panel);
+		panel.setLayout(new GridLayout(1, 0, 0, 0));
+		
 		JPanel inputPanel = new InputPanel();
-		add(inputPanel);
+		panel.add(inputPanel);
+		inputPanel.setLayout(new GridLayout(1, 0, 0, 0));
+		ButtonPanel buttonPanel = new ButtonPanel();
+		panel.add(buttonPanel);
+		buttonPanel.setLayout(new GridLayout(0, 1));
+		
+		JPanel displayPanel = new JPanel();
+		panel.add(displayPanel);
+		displayPanel.add(new displayOptionsPanel());
+		displayPanel.setLayout(new GridLayout(0, 1));
+		
 		inputPanel.addPropertyChangeListener("mixer",
 				new PropertyChangeListener() {
 					@Override
@@ -76,16 +92,14 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 					}
 				});
 		
-		algo = PitchEstimationAlgorithm.YIN;
-		
-		JPanel pitchDetectionPanel = new PitchDetectionPanel(algoChangeListener);
-		
-		add(pitchDetectionPanel);
-	
+		algo = PitchEstimationAlgorithm.MPM;
 		
 		textArea = new JTextArea();
 		textArea.setEditable(false);
 		add(new JScrollPane(textArea));
+		
+		JPanel pitchDetectionPanel = new PitchDetectionPanel();
+		add(pitchDetectionPanel);
 	}
 
 
@@ -153,6 +167,7 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 			float probability = pitchDetectionResult.getProbability();
 			double rms = audioEvent.getRMS() * 100;
 			String message = String.format("Pitch detected at %.2fs: %.2fHz ( %.2f probability, RMS: %.5f )\n", timeStamp,pitch,probability,rms);
+			//OUTPUT TO GRAPH
 			textArea.append(message);
 			textArea.setCaretPosition(textArea.getDocument().getLength());
 		}

@@ -1,24 +1,24 @@
 package gui;
 
 import java.awt.GridLayout;
-import java.awt.event.ActionListener;
-import javax.swing.ButtonGroup;
+//import java.awt.event.ActionListener;
+//import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+//import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
-import be.tarsos.dsp.pitch.PitchProcessor.PitchEstimationAlgorithm;
+//import be.tarsos.dsp.pitch.PitchProcessor.PitchEstimationAlgorithm;
 
 public class PitchDetectionPanel extends JPanel {
 
 	private static final long serialVersionUID = -5107785666165487335L;
-	private PitchEstimationAlgorithm algo;
+	//private PitchEstimationAlgorithm algo;
 	
-	public PitchDetectionPanel(ActionListener algoChangedListener){
+	public PitchDetectionPanel(){
 		super(new GridLayout(0,1));
-		setBorder(new TitledBorder(""));
+		setBorder(new TitledBorder("Graph will be here"));
 		//ButtonGroup group = new ButtonGroup();
-		algo = PitchEstimationAlgorithm.MPM;
-		for (PitchEstimationAlgorithm value : PitchEstimationAlgorithm.values()) {
+		//algo = PitchEstimationAlgorithm.MPM;
+		//for (PitchEstimationAlgorithm value : PitchEstimationAlgorithm.values()) {
 		//	JRadioButton button = new JRadioButton();
 		//	button.setText(value.toString());
 		//	add(button);
@@ -26,6 +26,6 @@ public class PitchDetectionPanel extends JPanel {
 		//	button.setSelected(value == algo);
 		//	button.setActionCommand(value.name());
 		//	button.addActionListener(algoChangedListener);
-		}
+		//}
 	}
 }
