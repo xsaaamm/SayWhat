@@ -165,6 +165,8 @@ public class PitchDetectorExample extends JFrame implements PitchDetectionHandle
 			textArea.append(message);		
 			
 			textArea.setCaretPosition(textArea.getDocument().getLength());
+			
+			
 		}
 	}
 }

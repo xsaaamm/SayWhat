@@ -13,6 +13,9 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import org.LiveGraph.LiveGraph;
+import org.LiveGraph.dataFile.write.DataStreamWriter;
+
 import be.tarsos.dsp.AudioDispatcher;
 import be.tarsos.dsp.AudioEvent;
 import be.tarsos.dsp.io.jvm.JVMAudioInputStream;
@@ -31,6 +34,7 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 
 	private static final long serialVersionUID = 5336983837352763066L;
 	public static JTextArea textArea;
+	public static JTextArea textArea_1;
 	public static float pitch;
 	public static float probability;
 	public static double rms;
@@ -98,6 +102,10 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 		
 		JPanel pitchDetectionPanel = new PitchDetectionPanel();
 		add(pitchDetectionPanel);		
+		
+		textArea_1 = new JTextArea();
+		textArea_1.setEditable(false);
+		pitchDetectionPanel.add(new JScrollPane(textArea_1));
 	}
 
 	private void setNewMixer(Mixer mixer) throws LineUnavailableException,
@@ -111,7 +119,7 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 			int bufferSize = 1024;
 			int overlap = 0;
 			
-			textArea.append("Started listening with " + Shared.toLocalString(mixer.getMixerInfo().getName()) + "\n");
+			//textArea.append("Started listening with " + Shared.toLocalString(mixer.getMixerInfo().getName()) + " ");
 			textArea.append("You may now begin.  Started listening with " + Shared.toLocalString(mixer.getMixerInfo().getName()) + "\n");
 	
 			final AudioFormat format = new AudioFormat(sampleRate, 16, 1, true,true);
@@ -143,8 +151,10 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 					//ignore failure to set default look en feel;
 				}
 				JFrame frame = new PitchDetectorExample();
+				//textArea_1 = new JTextArea();
 				frame.pack();
 				frame.setVisible(true);
+				//frame.getContentPane().add(textArea_1);
 			}
 		});
 	}
@@ -152,27 +162,59 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 	@Override
 	public void handlePitch(PitchDetectionResult pitchDetectionResult,AudioEvent audioEvent) {
 		if(pitchDetectionResult.getPitch() != -1){
+			
 			timeStamp = audioEvent.getTimeStamp();
 			pitch = pitchDetectionResult.getPitch();
 			probability = pitchDetectionResult.getProbability();
 			rms = audioEvent.getRMS() * 100;
+			
+			//test will be deleted 
 			String message = String.format("Pitch detected at %.2fs: %.2fHz ( %.2f probability, RMS: %.5f )\n", timeStamp,pitch,probability,rms);
 			textArea.append(message);
 			textArea.setCaretPosition(textArea.getDocument().getLength());
+			
+			//--> This info will output to make the graph
+			//--> Values will be used to create csv file, then csv will be used to create real time graph
+			
+			writeFile();
+			
+			/**String message2 = "Pitch: " + FreePane.getPitch() + "(Hz). Probability: " 
+					+ FreePane.getProb()*100 + "%. Timestamp: " + FreePane.getTimeStamp() + "\n";
+			textArea_1.append(message2);
+			textArea_1.setCaretPosition(textArea_1.getDocument().getLength());
+			*/
 		}
 	}
 	
-	public float getPitch(){
+	public static float getPitch(){
 		return pitch;
 	}	
-	public float getProb(){
+	public static float getProb(){
 		return probability;
 	}	
-	public double getRMS(){
+	public static double getRMS(){
 		return rms;
 	}	
-	public double getTimeStamp(){
+	public static double getTimeStamp(){
 		return timeStamp;
+	}
+	public void writeFile(){
+		
+		
+		// Start LiveGraph:
+		LiveGraph lg = LiveGraph.application();
+		//lg.execStandalone();
+		
+		// Turn LiveGraph into memory mode:
+		DataStreamWriter out = lg.updateInvoker().startMemoryStreamMode();
+			if (null == out) {
+				System.out.println("Could not switch LiveGraph into memory stream mode.");
+				lg.disposeGUIAndExit();
+				return;
+			}
+		
+					
+
 	}
 
 
