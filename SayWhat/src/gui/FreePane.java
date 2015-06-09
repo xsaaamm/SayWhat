@@ -23,25 +23,25 @@ import be.tarsos.dsp.pitch.PitchProcessor.PitchEstimationAlgorithm;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
-import java.awt.FlowLayout;
-import javax.swing.JButton;
 
 public class FreePane extends JPanel implements PitchDetectionHandler {
 
 	private static final long serialVersionUID = 5336983837352763066L;
-	
-	private final JTextArea textArea;
+	public static JTextArea textArea;
+	public static float pitch;
+	public static float probability;
+	public static double rms;
+	public static double timeStamp;
 
 	private AudioDispatcher dispatcher;
+	@SuppressWarnings("unused")
 	private Mixer currentMixer;
 	
 	private PitchEstimationAlgorithm algo;	
-	private ActionListener algoChangeListener = new ActionListener(){
+	/**private ActionListener algoChangeListener = new ActionListener(){
 		@Override
 		public void actionPerformed(final ActionEvent e) {
 			String name = e.getActionCommand();
@@ -54,7 +54,7 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 			} catch (UnsupportedAudioFileException e1) {
 				e1.printStackTrace();
 			}
-	}};
+	}};*/
 
 	public FreePane() {
 		setBackground(Color.LIGHT_GRAY);
@@ -77,20 +77,18 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 		displayPanel.setLayout(new GridLayout(0, 1));
 		
 		inputPanel.addPropertyChangeListener("mixer",
-				new PropertyChangeListener() {
-					@Override
-					public void propertyChange(PropertyChangeEvent arg0) {
-						try {
-							setNewMixer((Mixer) arg0.getNewValue());
-						} catch (LineUnavailableException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (UnsupportedAudioFileException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+			new PropertyChangeListener() {
+				@Override
+				public void propertyChange(PropertyChangeEvent arg0) {
+					try {
+						setNewMixer((Mixer) arg0.getNewValue());
+					} catch (LineUnavailableException e) {
+						e.printStackTrace();
+					} catch (UnsupportedAudioFileException e) {
+						e.printStackTrace();
 					}
-				});
+				}
+			});
 		
 		algo = PitchEstimationAlgorithm.MPM;
 		
@@ -99,50 +97,43 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 		add(new JScrollPane(textArea));
 		
 		JPanel pitchDetectionPanel = new PitchDetectionPanel();
-		add(pitchDetectionPanel);
+		add(pitchDetectionPanel);		
 	}
 
-
-	
 	private void setNewMixer(Mixer mixer) throws LineUnavailableException,
-			UnsupportedAudioFileException {
-		
-		if(dispatcher!= null){
-			dispatcher.stop();
+		UnsupportedAudioFileException {
+			if(dispatcher!= null){
+				dispatcher.stop();
+			}
+			currentMixer = mixer;
+			
+			float sampleRate = 44100;
+			int bufferSize = 1024;
+			int overlap = 0;
+			
+			textArea.append("Started listening with " + Shared.toLocalString(mixer.getMixerInfo().getName()) + "\n");
+			textArea.append("You may now begin.  Started listening with " + Shared.toLocalString(mixer.getMixerInfo().getName()) + "\n");
+	
+			final AudioFormat format = new AudioFormat(sampleRate, 16, 1, true,true);
+			final DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, format);
+			TargetDataLine line;
+			line = (TargetDataLine) mixer.getLine(dataLineInfo);
+			final int numberOfSamples = bufferSize;
+			line.open(format, numberOfSamples);
+			line.start();
+			final AudioInputStream stream = new AudioInputStream(line);
+	
+			JVMAudioInputStream audioStream = new JVMAudioInputStream(stream);
+			// create a new dispatcher
+			dispatcher = new AudioDispatcher(audioStream, bufferSize, overlap);
+	
+			// add a processor
+			dispatcher.addAudioProcessor(new PitchProcessor(algo, sampleRate, bufferSize, this));
+			
+			new Thread(dispatcher,"Audio dispatching").start();
 		}
-		currentMixer = mixer;
-		
-		float sampleRate = 44100;
-		int bufferSize = 1024;
-		int overlap = 0;
-		
-		//textArea.append("Started listening with " + Shared.toLocalString(mixer.getMixerInfo().getName()) + "\n");
-		textArea.append("You may now begin.  Started listening with " + Shared.toLocalString(mixer.getMixerInfo().getName()) + "\n");
 
-		final AudioFormat format = new AudioFormat(sampleRate, 16, 1, true,
-				true);
-		final DataLine.Info dataLineInfo = new DataLine.Info(
-				TargetDataLine.class, format);
-		TargetDataLine line;
-		line = (TargetDataLine) mixer.getLine(dataLineInfo);
-		final int numberOfSamples = bufferSize;
-		line.open(format, numberOfSamples);
-		line.start();
-		final AudioInputStream stream = new AudioInputStream(line);
-
-		JVMAudioInputStream audioStream = new JVMAudioInputStream(stream);
-		// create a new dispatcher
-		dispatcher = new AudioDispatcher(audioStream, bufferSize,
-				overlap);
-
-		// add a processor
-		dispatcher.addAudioProcessor(new PitchProcessor(algo, sampleRate, bufferSize, this));
-		
-		new Thread(dispatcher,"Audio dispatching").start();
-	}
-
-	public static void main(String... strings) throws InterruptedException,
-			InvocationTargetException {
+	public static void main(String... strings) throws InterruptedException, InvocationTargetException {
 		SwingUtilities.invokeAndWait(new Runnable() {
 			@Override
 			public void run() {
@@ -158,18 +149,36 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 		});
 	}
 
-
 	@Override
 	public void handlePitch(PitchDetectionResult pitchDetectionResult,AudioEvent audioEvent) {
 		if(pitchDetectionResult.getPitch() != -1){
-			double timeStamp = audioEvent.getTimeStamp();
-			float pitch = pitchDetectionResult.getPitch();
-			float probability = pitchDetectionResult.getProbability();
-			double rms = audioEvent.getRMS() * 100;
+			timeStamp = audioEvent.getTimeStamp();
+			pitch = pitchDetectionResult.getPitch();
+			probability = pitchDetectionResult.getProbability();
+			rms = audioEvent.getRMS() * 100;
 			String message = String.format("Pitch detected at %.2fs: %.2fHz ( %.2f probability, RMS: %.5f )\n", timeStamp,pitch,probability,rms);
-			//OUTPUT TO GRAPH
 			textArea.append(message);
 			textArea.setCaretPosition(textArea.getDocument().getLength());
 		}
 	}
+	
+	public float getPitch(){
+		return pitch;
+	}	
+	public float getProb(){
+		return probability;
+	}	
+	public double getRMS(){
+		return rms;
+	}	
+	public double getTimeStamp(){
+		return timeStamp;
+	}
+
+
+	
 }
+		
+
+	
+

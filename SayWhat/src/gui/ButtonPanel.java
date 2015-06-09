@@ -6,28 +6,14 @@ import java.awt.GridLayout;
 import javax.swing.JPanel;
 //import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
-import java.awt.FlowLayout;
 import javax.swing.JTextField;
-import javax.swing.JSplitPane;
 import javax.swing.BoxLayout;
-import java.awt.Component;
-import java.awt.GridBagLayout;
-import java.awt.BorderLayout;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.JList;
 import javax.swing.SwingConstants;
-import javax.swing.JMenu;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JMenuBar;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JLabel;
-import javax.swing.JComboBox;
 //import be.tarsos.dsp.pitch.PitchProcessor.PitchEstimationAlgorithm;
 
 public class ButtonPanel extends JPanel {

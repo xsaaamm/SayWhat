@@ -11,7 +11,7 @@ public class dbConnector {
 		try {
 				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/saywhatdb", "root", "");
 				Statement stmt = conn.createStatement();
-				ResultSet result = stmt.executeQuery("SELECT * from users WHERE fk_roles_id=1");
+				ResultSet result = stmt.executeQuery("SELECT * from users WHERE role_id_fk = 00001");
 				System.out.println("Connected to Database");
 				while (result.next()){
 					System.out.println(result.getString("lname") + ", " + result.getString("fname"));

@@ -125,7 +125,7 @@ public class Login extends JFrame{
 		btnNewUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try{
-					AddUsers newusers = new AddUsers();
+					AddUsersFrame newusers = new AddUsersFrame();
 					newusers.setVisible(true);
 				}catch (Exception e3){
 					JOptionPane.showMessageDialog(null, "Could not connect to server, try again");
@@ -144,9 +144,8 @@ public class Login extends JFrame{
 		btnLogin.addActionListener(new ActionListener() {
 			@SuppressWarnings({ "deprecation" })
 			public void actionPerformed(ActionEvent arg0) {
-				
 				try{
-					String query = "SELECT * from usernames WHERE username=? and pass_child=?";
+					String query = "SELECT * from usernames WHERE username=? and password=?";
 					PreparedStatement pst = connection.prepareStatement(query);
 					pst.setString(1, usernameField.getText());
 					pst.setString(2, passwordField.getText());
@@ -158,29 +157,16 @@ public class Login extends JFrame{
 						count++;
 					}if (count == 1){
 						User currentUser = new User();
-						String usernameFieldValue = usernameField.getText();
 						currentUser.setLoggedIn(true);
-						try{
-							String query2 = "SELECT id from usernames WHERE username=?";
-							PreparedStatement pst2 = connection.prepareStatement(query);
-							pst2.setString(1, usernameField.getText());
-							ResultSet result2 = pst2.executeQuery();
-							int countq = 0;
-							while (result.next()){
-								countq++;
-							}
-						}catch(Exception e){
-							
-						}
 						
 						//JOptionPane.showMessageDialog(null, "Username and Password is correct");						
 						frmLoginPage.dispose();
-						Main main = new Main();
-						main.setVisible(true);
-						main.setExtendedState(MAXIMIZED_BOTH);
-						main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						Main main1 = new Main();
+						main1.setVisible(true);
+						main1.setExtendedState(MAXIMIZED_BOTH);
+						main1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 						
-						//----------------------------------------------------------------->> Log User in
+						//----------------------------------------------------------------------------------------------->> Log User in
 					}else{
 						JOptionPane.showMessageDialog(null, "Username and/or password is not correct, try again");
 					}
@@ -190,7 +176,7 @@ public class Login extends JFrame{
 					
 				}catch(Exception e2){
 					//System.out.println("ERROR: Could not connect");
-				//	JOptionPane.showMessageDialog(null, e2);
+					//JOptionPane.showMessageDialog(null, e2);
 				}//------------------------------------------------------->>>>>>> Close Connection??
 				
 			}
@@ -238,7 +224,7 @@ public class Login extends JFrame{
 				try {
 					connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/saywhatdb", "root", "");
 					Statement stmt = connection.createStatement();
-					ResultSet result = stmt.executeQuery("SELECT * from usernames WHERE fk_users_id=3");
+					ResultSet result = stmt.executeQuery("SELECT * from usernames WHERE user_id_fk=3");
 					while (result.next()){
 						usernameField.setText(result.getString("username"));
 					}
@@ -254,7 +240,7 @@ public class Login extends JFrame{
 				try {
 					connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/saywhatdb", "root", "");
 					Statement stmt = connection.createStatement();
-					ResultSet result = stmt.executeQuery("SELECT * from usernames WHERE fk_users_id=1");
+					ResultSet result = stmt.executeQuery("SELECT * from usernames WHERE user_id_fk=1");
 					while (result.next()){
 						usernameField.setText(result.getString("username"));
 					}
@@ -270,7 +256,7 @@ public class Login extends JFrame{
 				try {
 					connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/saywhatdb", "root", "");
 					Statement stmt = connection.createStatement();
-					ResultSet result = stmt.executeQuery("SELECT * from usernames WHERE fk_users_id=2");
+					ResultSet result = stmt.executeQuery("SELECT * from usernames WHERE user_id_fk=2");
 					while (result.next()){
 						usernameField.setText(result.getString("username"));
 					}

@@ -25,8 +25,6 @@
 package gui;
 
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
@@ -45,7 +43,6 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import tarsos_pitch.PitchDetectionPanel;
 import be.tarsos.dsp.AudioDispatcher;
 import be.tarsos.dsp.AudioEvent;
 import be.tarsos.dsp.io.jvm.JVMAudioInputStream;
@@ -64,6 +61,7 @@ public class PitchDetectorExample extends JFrame implements PitchDetectionHandle
 	private final JTextArea textArea;
 
 	private AudioDispatcher dispatcher;
+	@SuppressWarnings("unused")
 	private Mixer currentMixer;
 	
 	private PitchEstimationAlgorithm algo;	
@@ -93,16 +91,12 @@ public class PitchDetectorExample extends JFrame implements PitchDetectionHandle
 		algo = PitchEstimationAlgorithm.MPM;
 		
 		//JPanel pitchDetectionPanel = new PitchDetectionPanel(algoChangeListener);
-		
 		//add(pitchDetectionPanel);
-	
 		
 		textArea = new JTextArea();
 		textArea.setEditable(false);
 		add(new JScrollPane(textArea));
 	}
-
-
 	
 	private void setNewMixer(Mixer mixer) throws LineUnavailableException,
 			UnsupportedAudioFileException {
@@ -157,7 +151,6 @@ public class PitchDetectorExample extends JFrame implements PitchDetectionHandle
 		});
 	}
 
-
 	@Override
 	public void handlePitch(PitchDetectionResult pitchDetectionResult,AudioEvent audioEvent) {
 		if(pitchDetectionResult.getPitch() != -1){
@@ -165,8 +158,12 @@ public class PitchDetectorExample extends JFrame implements PitchDetectionHandle
 			float pitch = pitchDetectionResult.getPitch();
 			float probability = pitchDetectionResult.getProbability();
 			double rms = audioEvent.getRMS() * 100;
-			String message = String.format("Pitch detected at %.2fs: %.2fHz ( %.2f probability, RMS: %.5f )\n", timeStamp,pitch,probability,rms);
-			textArea.append(message);
+			
+			for (float i=0; i<=pitch; i+=5){
+				textArea.append("|");
+			}String message = String.format("Pitch detected at %.2fs: %.2fHz ( %.2f probability, RMS: %.5f )\n", timeStamp,pitch,probability,rms);
+			textArea.append(message);		
+			
 			textArea.setCaretPosition(textArea.getDocument().getLength());
 		}
 	}
