@@ -24,6 +24,12 @@ public class User {
 	}public void setLoggedIn(boolean loggedIn) {
 		this.loggedIn = loggedIn;
 	}
+	public void login(){
+		this.setLoggedIn(true);
+	}
+	public void validateUser(){
+		
+	}
 	public void logout(){
 		this.setLoggedIn(false);
 		this.id = 0;
@@ -33,7 +39,7 @@ public class User {
 	public int getUserID() {
 		return id;
 	}public void setUserID(int id) {
-			this.id = id;
+		this.id = id;
 	}
 	public String getEmail() {
 		return email;

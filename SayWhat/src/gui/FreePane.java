@@ -179,45 +179,15 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 			//--> This info will output to make the graph
 			//--> Values will be used to create csv file, then csv will be used to create real time graph
 			
-			writeFile(pitchDetectionResult,audioEvent);
-			
-			/**String message2 = "Pitch: " + FreePane.getPitch() + "(Hz). Probability: " 
-					+ FreePane.getProb()*100 + "%. Timestamp: " + FreePane.getTimeStamp() + "\n";
-			textArea_1.append(message2);
-			textArea_1.setCaretPosition(textArea_1.getDocument().getLength());
-			*/
+			writeFile(pitchDetectionResult,audioEvent);	
 		}
-		
 	}
-	
-	/**public static float getPitch(){
-		return pitch;
-	}	
-	public static float getProb(){
-		return probability;
-	}	
-	public static double getRMS(){
-		return rms;
-	}	
-	public static double getTimeStamp(){
-		return timeStamp;
-	}
-	 * @return */
 	
 	private void writeFile(PitchDetectionResult pitchDetectionResult,AudioEvent audioEvent){
 		
-		timeStamp = audioEvent.getTimeStamp();
-		pitch = pitchDetectionResult.getPitch();
-		probability = pitchDetectionResult.getProbability();
-		rms = audioEvent.getRMS() * 100;
-		
-		final int SLEEP_MEAN = 100;
-		final int SLEEP_SCATTER = 100;
-		//final int MAX_DATASETS;
-		
 		// Start LiveGraph:
 		LiveGraph lg = LiveGraph.application();
-		//lg.execStandalone();
+		lg.execEngine();
 		
 		// Turn LiveGraph into memory mode:
 		DataStreamWriter out = lg.updateInvoker().startMemoryStreamMode();
@@ -235,62 +205,41 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 		
 		// Set-up the data series:
 		out.addDataSeries("Time");
-		out.addDataSeries("Dataset number");
-		out.addDataSeries("Burst number");
 		out.addDataSeries("Pitch");	
 		out.addDataSeries("Probability");
 		out.addDataSeries("RMS");
 		out.addDataSeries("Timestamp");		
 					
 		// Loop until enough datasets a written:
-		int datasetNumber = 0;
-		int burstNumber = 0;
 		long startMillis = System.currentTimeMillis();
-		while (pitchDetectionResult.getPitch() != -1) {
 			
-			// Status message:
-			String message3 = ("Time: " + startMillis + ". " + "Datasets sent through memory so far: " + datasetNumber + ". "
-							 + "Now sending burst " + burstNumber + "..." + "Pitch: " + pitch 
-							 + "(Hz). Probability: " + probability + ". RMS: " + rms + "%. Timestamp: " 
-							 + timeStamp + "\n");
-			textArea_1.append(message3);
-			
-			// Write a few datasets to the file:
-			for (int b = 0; b >= 0; b++) {
-				// Set-up the data values:
-				out.setDataValue(System.currentTimeMillis() - startMillis);
-				out.setDataValue(datasetNumber);
-				out.setDataValue(burstNumber);
-				out.setDataValue(pitch);
-				out.setDataValue(probability);
-				out.setDataValue(rms);
-				out.setDataValue(timeStamp);
+		// Write a few datasets to the file:
+		// Set-up the data values:
+		out.setDataValue(System.currentTimeMillis() - startMillis);
+		out.setDataValue(pitch);
+		out.setDataValue(probability);
+		out.setDataValue(rms);
+		out.setDataValue(timeStamp);
 						
-				// Write dataset to disk:			
-				out.writeDataSet();
-				
-				// If LiveGraph's main window was closed by user, we can finish the demo:
-				if (out.hadIOException()) {
-					if (out.getIOException() instanceof PipeClosedByReaderException) {
-						textArea_1.append("LiveGraph window closed. No reason for more data. Finishing.");
-						out.close();
-						textArea_1.append("Demo finished. Cheers.");
-						return;
-					}
-				}
-				
-				// Check for any other IOErrors and display:			
-				if (out.hadIOException()) {
-					out.getIOException().printStackTrace();
-					out.resetIOException();
-				}
-				datasetNumber++;
-			}
+		// Write dataset to disk:			
+		out.writeDataSet();
 		
-			// Pause:
-			long sleep = (long) Math.max(SLEEP_MEAN + Math.random() * 2 * SLEEP_SCATTER - SLEEP_SCATTER, 1.);
-			SystemTools.sleep(sleep);	
+		// If LiveGraph's main window was closed by user, we can finish the demo:
+		if (out.hadIOException()) {
+			if (out.getIOException() instanceof PipeClosedByReaderException) {
+				textArea_1.append("LiveGraph window closed. No reason for more data. Finishing.");
+				out.close();
+				textArea_1.append("Demo finished. Cheers.");
+				return;
+			}
 		}
+		
+		// Check for any other IOErrors and display:			
+		if (out.hadIOException()) {
+			out.getIOException().printStackTrace();
+			out.resetIOException();
+		}
+		
 		// Finish:
 		out.close();
 		lg.disposeGUIAndExit();
@@ -301,8 +250,7 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-}
+}}
 		
 
 	
