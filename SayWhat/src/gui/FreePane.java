@@ -16,9 +16,6 @@ import javax.swing.UIManager;
 import org.LiveGraph.LiveGraph;
 import org.LiveGraph.dataFile.common.PipeClosedByReaderException;
 import org.LiveGraph.dataFile.write.DataStreamWriter;
-import org.LiveGraph.demoDataSource.LiveGraphMemoryStreamDemo;
-
-import com.softnetConsult.utils.sys.SystemTools;
 
 import be.tarsos.dsp.AudioDispatcher;
 import be.tarsos.dsp.AudioEvent;
@@ -43,6 +40,12 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 	public static float probability;
 	public static double rms;
 	public static double timeStamp;
+	final int SLEEP_MEAN = 100;
+	final int SLEEP_SCATTER = 100;
+	LiveGraph lg;
+	DataStreamWriter out;
+	long startMillis;
+	//final int MAX_DATASETS;
 
 	private AudioDispatcher dispatcher;
 	@SuppressWarnings("unused")
@@ -106,10 +109,43 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 		
 		JPanel pitchDetectionPanel = new PitchDetectionPanel();
 		add(pitchDetectionPanel);		
+	
+		// Start LiveGraph:
+		lg = LiveGraph.application();
+		lg.execEngine();
 		
-		textArea_1 = new JTextArea();
-		textArea_1.setEditable(false);
-		pitchDetectionPanel.add(new JScrollPane(textArea_1));
+		PitchPlotPanel graph = new PitchPlotPanel();
+		LiveGraph.application().eventManager().registerListener(graph);
+		JPanel innerplotpanel = lg.guiManager().createPlotPanel();
+		graph.add(innerplotpanel);
+		
+		// Turn LiveGraph into memory mode:
+		out = lg.updateInvoker().startMemoryStreamMode();
+			if (null == out) {
+				String message2 =  ("Could not switch LiveGraph into memory stream mode.");
+				textArea_1.append(message2);
+				lg.disposeGUIAndExit();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+			}
+			
+		// Set a values separator:
+		out.setSeparator(";");
+		
+		// Add a file description line:
+		out.writeFileInfo("SayWhat! demo file.");
+		
+		// Set-up the data series:
+		out.addDataSeries("Time");
+		out.addDataSeries("Pitch");	
+		out.addDataSeries("Probability");
+		out.addDataSeries("RMS");
+		out.addDataSeries("Timestamp");	
+		
+		startMillis = -1;
+
+		
+		
+		pitchDetectionPanel.add(graph);
+			
 	}
 
 	private void setNewMixer(Mixer mixer) throws LineUnavailableException, UnsupportedAudioFileException {
@@ -165,7 +201,9 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 	@Override
 	public void handlePitch(PitchDetectionResult pitchDetectionResult,AudioEvent audioEvent) {
 		if(pitchDetectionResult.getPitch() != -1){
-			
+			if (startMillis == -1){
+				startMillis = System.currentTimeMillis();
+			}
 			timeStamp = audioEvent.getTimeStamp();
 			pitch = pitchDetectionResult.getPitch();
 			probability = pitchDetectionResult.getProbability();
@@ -177,80 +215,42 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 			textArea.setCaretPosition(textArea.getDocument().getLength());
 			
 			//--> This info will output to make the graph
-			//--> Values will be used to create csv file, then csv will be used to create real time graph
+			//--> Values will be used to create csv file, then csv will be used to create real time graph	
+
+			// Set-up the data values:
+			out.setDataValue(System.currentTimeMillis() - startMillis);
+			out.setDataValue(pitch);
+			out.setDataValue(probability);
+			out.setDataValue(rms);
+			out.setDataValue(timeStamp);		
+
+			// Write dataset to disk:			
+			out.writeDataSet();
+			LiveGraph.application().updateInvoker().requestUpdate();
 			
-			writeFile(pitchDetectionResult,audioEvent);	
+			// If LiveGraph's main window was closed by user, we can finish the demo:
+			if (out.hadIOException()) {
+				if (out.getIOException() instanceof PipeClosedByReaderException) {
+					textArea_1.append("LiveGraph window closed. No reason for more data. Finishing.");
+					out.close();
+					textArea_1.append("Demo finished. Cheers.");
+					
+					// Finish:
+					out.close();
+					//lg.disposeGUIAndExit();
+					
+					return;
+				}
+			}
+			// Check for any other IOErrors and display:			
+			if (out.hadIOException()) {
+				out.getIOException().printStackTrace();
+				out.resetIOException();
+			}
+
 		}
 	}
-	
-	private void writeFile(PitchDetectionResult pitchDetectionResult,AudioEvent audioEvent){
-		
-		// Start LiveGraph:
-		LiveGraph lg = LiveGraph.application();
-		lg.execEngine();
-		
-		// Turn LiveGraph into memory mode:
-		DataStreamWriter out = lg.updateInvoker().startMemoryStreamMode();
-			if (null == out) {
-				String message2 =  ("Could not switch LiveGraph into memory stream mode.");
-				textArea_1.append(message2);
-				lg.disposeGUIAndExit();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
-			}
-			
-		// Set a values separator:
-		out.setSeparator(";");
-		
-		// Add a file description line:
-		out.writeFileInfo("SayWhat! demo file.");
-		
-		// Set-up the data series:
-		out.addDataSeries("Time");
-		out.addDataSeries("Pitch");	
-		out.addDataSeries("Probability");
-		out.addDataSeries("RMS");
-		out.addDataSeries("Timestamp");		
-					
-		// Loop until enough datasets a written:
-		long startMillis = System.currentTimeMillis();
-			
-		// Write a few datasets to the file:
-		// Set-up the data values:
-		out.setDataValue(System.currentTimeMillis() - startMillis);
-		out.setDataValue(pitch);
-		out.setDataValue(probability);
-		out.setDataValue(rms);
-		out.setDataValue(timeStamp);
-						
-		// Write dataset to disk:			
-		out.writeDataSet();
-		
-		// If LiveGraph's main window was closed by user, we can finish the demo:
-		if (out.hadIOException()) {
-			if (out.getIOException() instanceof PipeClosedByReaderException) {
-				textArea_1.append("LiveGraph window closed. No reason for more data. Finishing.");
-				out.close();
-				textArea_1.append("Demo finished. Cheers.");
-				return;
-			}
-		}
-		
-		// Check for any other IOErrors and display:			
-		if (out.hadIOException()) {
-			out.getIOException().printStackTrace();
-			out.resetIOException();
-		}
-		
-		// Finish:
-		out.close();
-		lg.disposeGUIAndExit();
-		textArea_1.append("Demo finished.");
-		
-		try {
-			(new LiveGraphMemoryStreamDemo()).exec();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-}}
+}
 		
 
 	

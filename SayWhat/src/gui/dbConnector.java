@@ -1,5 +1,6 @@
 package gui;
 import java.sql.*;
+
 import javax.swing.JOptionPane;
 
 public class dbConnector {
@@ -20,7 +21,6 @@ public class dbConnector {
 		}
 		
 		public static void getConnecttion(){
-					
 			try {
 				conn = DriverManager.getConnection(host, root, pass);	
 				stmt = conn.prepareStatement(query);			
@@ -83,5 +83,18 @@ public class dbConnector {
 				JOptionPane.showMessageDialog(null, e2);
 			}
 		}
+		
+		public static void main(String[] args) throws SQLException{
+			/**dbConnector dbConnector = new dbConnector();
+			dbConnector.setQuery("SELECT * from users");
+			dbConnector.getConnecttion();
+			dbConnector.getResult();
+			int count = 0;
+			while (result.next()){	
+			   System.out.println(result.getString("fname"));
+			   count++;
+			}*/
+			}
 }
+
 

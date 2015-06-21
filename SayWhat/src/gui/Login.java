@@ -20,10 +20,10 @@ public class Login extends JFrame{
 
 	private static final long serialVersionUID = 3317897313713510859L;
 	JFrame frmLoginPage;
-	public static JPasswordField passwordField;
+	static JPasswordField passwordField;
 	private JLabel lblSayWhatLogin;
 	private JLabel lblUsername;	
-	public static JTextField usernameField;
+	static JTextField usernameField;
 	private JPanel panel;
 	private JLabel lblPassword;
 	private JButton btnNewUser;
@@ -53,19 +53,17 @@ public class Login extends JFrame{
 	/**
 	 * Create the application.
 	 */
-	public Login() {
-		try {
-			dbConnector.getConnecttion();
-			//JOptionPane.showMessageDialog(null, "Database Connection Successful");
-			initialize(); 
-		}catch (Exception e) {
-			System.out.println("ERROR: Could not connect to the Database");
-			e.printStackTrace();
-		}
+	public Login() throws SQLException {
+		initialize(); 
+		dbConnector.getConnecttion();
+		//JOptionPane.showMessageDialog(null, "Database Connection Successful");
 	}
 
-	//Initialize the contents of the frame.
+	/**
+	 * Initialize the contents of the frame.
+	 */
 	private void initialize() {
+		
 		//Frame Layout
 		frmLoginPage = new JFrame();
 		frmLoginPage.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\eclipse\\workspace\\Say What\\img\\simon icon2.png"));
@@ -124,7 +122,6 @@ public class Login extends JFrame{
 				try{
 					AddUsersFrame newusers = new AddUsersFrame();
 					newusers.setVisible(true);
-					//-----> connect to db, add data
 				}catch (Exception e3){
 					JOptionPane.showMessageDialog(null, "Could not connect to server, try again");
 				}
@@ -175,7 +172,7 @@ public class Login extends JFrame{
 				}catch(Exception e2){
 					//System.out.println("ERROR: Could not connect");
 					//JOptionPane.showMessageDialog(null, e2);
-				}//------------------------------------------------------->>>>>>> Close Connection??
+				}
 				
 			}
 		});
@@ -267,3 +264,6 @@ public class Login extends JFrame{
 
 	}
 }
+
+
+
