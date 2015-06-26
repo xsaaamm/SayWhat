@@ -1,45 +1,52 @@
 package gui;
-import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import java.awt.Color;
-
-import javax.swing.JTabbedPane;
-import javax.swing.JButton;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-import java.awt.GridLayout;
 import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.HeadlessException;
 import java.awt.SystemColor;
-import javax.swing.UIManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
+import javax.swing.UIManager;
 
 public class Main extends JFrame {
 	
 	private static final long serialVersionUID = 7837880633918248807L;
-	static Main mainframe = new Main();;
-	private JPanel mainPane= new JPanel();
-	HomePane homepane = new HomePane();
-	FreePane freepane = new FreePane();
-	PracticePane practicepane = new PracticePane();
-	ChallengePane challengepane = new ChallengePane();
-	SettingsPane settingspane = new SettingsPane();
-	RecordsPane recordspane = new RecordsPane();
-	HelpPane helppane = new HelpPane();
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					mainframe.setVisible(true);
-					mainframe.setExtendedState(MAXIMIZED_BOTH);
-				} catch (Exception e) {
+	
+	static Main mainFrame = new Main();
+	private JPanel mainPane = new JPanel();
+	private HomePane homepane = new HomePane();
+	private FreePane freepane = new FreePane();
+	private PracticePane practicepane = new PracticePane();
+	private ChallengePane challengepane = new ChallengePane();
+	private SettingsPane settingspane = new SettingsPane();
+	private RecordsPane recordspane = new RecordsPane();
+	private HelpPane helppane = new HelpPane();
+	private JPanel topButtonPanel = new JPanel();
+	private JButton btnSave = new JButton("Save");
+	private JButton btnQuit = new JButton("Quit");
+	private JButton btnLogout = new JButton("Logout");
+	private JTabbedPane tabbedMain = new JTabbedPane(JTabbedPane.TOP);
+	
+	public static void main(String[] args){
+		EventQueue.invokeLater(new Runnable(){
+			@Override
+			public void run(){
+				try{
+					mainFrame.setVisible(true);
+					mainFrame.setExtendedState(MAXIMIZED_BOTH);
+				}catch(Exception e){
 					e.printStackTrace();
 				}
 			}
@@ -50,150 +57,111 @@ public class Main extends JFrame {
 		initialize();
 	}
 	
-	public void initialize() {
+	private void initialize(){
+	    // ESC key closes mainframe
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Cancel");  //$NON-NLS-1$
+        getRootPane().getActionMap().put("Cancel", new AbstractAction(){ //$NON-NLS-1$
+			private static final long serialVersionUID = -1327730232303703872L;
+			@Override
+			public void actionPerformed(ActionEvent e){
+				mainFrame.dispose();
+            }
+        });
+        
+        //Set mainFrame Defaults
 		getContentPane().setBackground(new Color(0, 0, 0));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 959, 660);
-		setResizable(false);
 		setUndecorated(true);
-		//setContentPane(mainPane);
 		getContentPane().add(mainPane, BorderLayout.CENTER);
+		
+		 //Set mainPane defaults
 		mainPane.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-		mainPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		mainPane.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		mainPane.setLayout(new BorderLayout(0, 0));
-
-		JPanel topPanel = new JPanel();
-		topPanel.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-		mainPane.add(topPanel, BorderLayout.NORTH);
-		topPanel.setLayout(new GridLayout(0, 18, 0, 0));
 		
-		JPanel panel_9 = new JPanel();
-		panel_9.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-		topPanel.add(panel_9);
-		
-		JPanel panel = new JPanel();
-		panel.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-		topPanel.add(panel);
-		
-		JPanel panel_6 = new JPanel();
-		panel_6.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-		topPanel.add(panel_6);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-		topPanel.add(panel_1);
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-		topPanel.add(panel_2);
-		
-		JPanel panel_3 = new JPanel();
-		panel_3.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-		topPanel.add(panel_3);
-		
-		JPanel panel_4 = new JPanel();
-		panel_4.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-		topPanel.add(panel_4);
-		
-		JPanel panel_5 = new JPanel();
-		panel_5.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-		topPanel.add(panel_5);
-		
-		JPanel panel_7 = new JPanel();
-		panel_7.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-		topPanel.add(panel_7);
-		
-		JPanel panel_8 = new JPanel();
-		panel_8.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-		topPanel.add(panel_8);
-		
-		JPanel panel_10 = new JPanel();
-		panel_10.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-		topPanel.add(panel_10);
-		
-		JPanel panel_11 = new JPanel();
-		panel_11.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-		topPanel.add(panel_11);
-		
-		JPanel panel_12 = new JPanel();
-		panel_12.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-		topPanel.add(panel_12);
-		
-		JPanel panel_13 = new JPanel();
-		panel_13.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-		topPanel.add(panel_13);
-		
-		JPanel panel_14 = new JPanel();
-		panel_14.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-		topPanel.add(panel_14);
-		
-		JButton btnSave = new JButton("Save");
-		//btnSave.setBackground(new Color(255, 0, 0));
-		topPanel.add(btnSave);
-		
-		JButton btnLogout = new JButton("Logout");
-		//btnLogout.setBackground(new Color(30, 144, 255));
-		btnLogout.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				//------------------------------------------------->>>Save
-				try {
-					mainframe.dispose();
-					Login login = new Login();
-					login.setVisible(true);
-					login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					login.frmLoginPage.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-					System.out.println("Could not add Parent, please try again");
-				}
-			}
-		});
-		topPanel.add(btnLogout);
-		
-		JButton btnQuit = new JButton("Quit");
-		//btnQuit.setBackground(new Color(154, 205, 50));
-		btnQuit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				//------------------------------------------------->>>Save
-				System.exit(0);
-			}
-		});
-		topPanel.add(btnQuit);
-		
-		JTabbedPane tabbedMain = new JTabbedPane(JTabbedPane.TOP);
-		tabbedMain.setBackground(Color.LIGHT_GRAY);
+		//Add tabbed panel to main panel	
 		mainPane.add(tabbedMain, BorderLayout.CENTER);
-		homepane.setBackground(SystemColor.window);
-	
-		tabbedMain.addTab("Home", null, homepane, null);
-		tabbedMain.setForegroundAt(0, new Color(0, 0, 0));
-		tabbedMain.setBackgroundAt(0, SystemColor.activeCaption);
-		freepane.setBackground(SystemColor.window);
-		
-		tabbedMain.addTab("Free Mode", null, freepane, null);
-		tabbedMain.setBackgroundAt(1, SystemColor.activeCaption);
-		practicepane.setBackground(SystemColor.window);
-		
-		tabbedMain.addTab("Practice Mode", null, practicepane, null);
-		tabbedMain.setBackgroundAt(2, SystemColor.activeCaption);
-		challengepane.setBackground(SystemColor.window);
-		
-		tabbedMain.addTab("Challenge Mode", null, challengepane, null);
-		tabbedMain.setBackgroundAt(3, SystemColor.activeCaption);
-		recordspane.setBackground(SystemColor.window);
-		
-		tabbedMain.addTab("Records", null, recordspane, null);
-		tabbedMain.setBackgroundAt(4, SystemColor.activeCaption);
-		settingspane.setBackground(SystemColor.window);
-		
-		tabbedMain.addTab("Settings", null, settingspane, null);
-		tabbedMain.setBackgroundAt(5, SystemColor.activeCaption);
-		helppane.setBackground(SystemColor.window);
-		
-		tabbedMain.addTab("Help", null, helppane, null);
-		tabbedMain.setForegroundAt(6, SystemColor.inactiveCaptionText);
-		tabbedMain.setBackgroundAt(6, SystemColor.activeCaption);
+			//add tabs to tabbed pabel
+			tabbedMain.addTab("Home", null, homepane, null);
+			tabbedMain.addTab("Free Mode", null, freepane, null);
+			tabbedMain.addTab("Practice Mode", null, practicepane, null);
+			tabbedMain.addTab("Challenge Mode", null, challengepane, null);
+			tabbedMain.addTab("Records", null, recordspane, null);
+			tabbedMain.addTab("Settings", null, settingspane, null);
+			tabbedMain.addTab("Help", null, helppane, null);
+			
+			//set tab backgrounds
+			tabbedMain.setBackground(Color.LIGHT_GRAY);	
+			tabbedMain.setBackgroundAt(0, SystemColor.activeCaption);
+			tabbedMain.setBackgroundAt(1, SystemColor.activeCaption);
+			tabbedMain.setBackgroundAt(2, SystemColor.activeCaption);
+			tabbedMain.setBackgroundAt(3, SystemColor.activeCaption);
+			tabbedMain.setBackgroundAt(4, SystemColor.activeCaption);	
+			tabbedMain.setBackgroundAt(5, SystemColor.activeCaption);
+			tabbedMain.setBackgroundAt(6, SystemColor.activeCaption);
+			
+			//Set tab window backgrounds
+			homepane.setBackground(SystemColor.window);
+			freepane.setBackground(SystemColor.window);
+			practicepane.setBackground(SystemColor.window);
+			challengepane.setBackground(SystemColor.window);
+			recordspane.setBackground(SystemColor.window);	
+			settingspane.setBackground(SystemColor.window);		
+			helppane.setBackground(SystemColor.window);
 
+		//Add Button Panel to main panel
+		mainPane.add(topButtonPanel, BorderLayout.NORTH);
+			topButtonPanel.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
+			topButtonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			//add buttons
+			topButtonPanel.add(btnSave);
+			topButtonPanel.add(btnLogout);
+			topButtonPanel.add(btnQuit);		
+				
+			//Save Button Clicked
+			btnSave.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						//Save
+						/**
+						 * Must create code to save data
+						 */
+						JOptionPane.showMessageDialog(null, "This session has been saved, keep up the good work");
+					} catch (HeadlessException e1) {
+						JOptionPane.showMessageDialog(null, "Could not save, try again");
+						e1.printStackTrace();
+					}
+				}
+			});
+		
+			//Logout Button Clicked- also saves
+			btnLogout.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					try {
+						//Save
+						/**
+						 * Must create code to save data
+						 */
+						mainFrame.dispose();
+						Login login = new Login();
+						login.frmLoginPage.setVisible(true);
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.out.println("Could not add Parent, please try again");
+					}
+				}
+			});
+		
+			//Quit Button Clicked - also saves
+			btnQuit.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					//Save
+					/**
+					 * Must create code to save data
+					 */
+					mainFrame.dispose();
+				}
+			});
 	}
 }

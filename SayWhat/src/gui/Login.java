@@ -1,27 +1,28 @@
 package gui;
-import java.sql.*;
-
-import javax.swing.*;
-
-import java.awt.EventQueue;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
-import javax.swing.JPasswordField;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class Login extends JFrame{
 
 	private static final long serialVersionUID = 3317897313713510859L;
+	
 	JFrame frmLoginPage;
 	static JPasswordField passwordField;
 	private JLabel lblSayWhatLogin;
@@ -39,6 +40,7 @@ public class Login extends JFrame{
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					Login window = new Login();
@@ -83,7 +85,7 @@ public class Login extends JFrame{
 		//Username Field
 		usernameField = new JTextField();
 		usernameField.setBounds(285, 211, 221, 20);
-		frmLoginPage.getContentPane().add(usernameField);
+		frmLoginPage.getRootPane().add(usernameField);
 		usernameField.setColumns(10);
 		
 		//Password Label
@@ -109,6 +111,7 @@ public class Login extends JFrame{
 			
 		//Sign Up Button Clicked
 		btnNewUser.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try{
 					AddUsersFrame newusers = new AddUsersFrame();
@@ -128,6 +131,7 @@ public class Login extends JFrame{
 	
 		//Login Button Clicked
 		btnLogin.addActionListener(new ActionListener() {
+			@Override
 			@SuppressWarnings({ "deprecation" })
 			public void actionPerformed(ActionEvent arg0) {
 				String username = Login.usernameField.getText();
@@ -137,10 +141,10 @@ public class Login extends JFrame{
 					User currentUser = new User();
 					currentUser.setLoggedIn(true);
 					frmLoginPage.dispose();				
-					Main.mainframe.setVisible(true);
-					Main.mainframe.setExtendedState(MAXIMIZED_BOTH);
-					Main.mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					
+					Main.mainFrame.setVisible(true);
+					Main.mainFrame.setExtendedState(MAXIMIZED_BOTH);
+					Main.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 					//Log User in - Create instance of current user
 					/**
 					 * Must Create Code to create instane of current user
@@ -189,6 +193,7 @@ public class Login extends JFrame{
 		
 		//User button clicked - toure
 		btnUserPic3.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				dbConnector.getConnection();				
 				try {
@@ -210,6 +215,7 @@ public class Login extends JFrame{
 		
 		//User button clicked - bobby
 		btnUserPic2.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				dbConnector.getConnection();
 				try {
@@ -230,6 +236,7 @@ public class Login extends JFrame{
 		
 		//User button1 clicked - sam
 		btnUserPic1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				dbConnector.getConnection();
 				try {
