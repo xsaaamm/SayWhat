@@ -20,7 +20,6 @@ public class Login extends JFrame{
 
 	private static final long serialVersionUID = 3317897313713510859L;
 	JFrame frmLoginPage;
-	JFrame mainframe;
 	static JPasswordField passwordField;
 	private JLabel lblSayWhatLogin;
 	private JLabel lblUsername;	
@@ -34,7 +33,7 @@ public class Login extends JFrame{
 	private JButton btnUserPic3;
 	private JLabel lbSoundBar;
 	private Connection connection = null;
-
+	private boolean auth = false;
 	//Launch the application.
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -132,9 +131,9 @@ public class Login extends JFrame{
 				try{
 					String username = Login.usernameField.getText();
 					String password = Login.passwordField.getText();
-					dbConnector.authenticateUser(username, password);
+					auth = dbConnector.getAuth(username, password);
 					
-					if (dbConnector.auth = true){
+					if (auth){
 						User currentUser = new User();
 						currentUser.setLoggedIn(true);
 						
@@ -145,12 +144,12 @@ public class Login extends JFrame{
 						Main.mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 						
 					}else{
-						JOptionPane.showMessageDialog(null, "Username and/or password is not correct, try again");
+						JOptionPane.showMessageDialog(null, "Username and/or password is not correct, please try again");
 					}
 					
 				}catch(Exception e2){
-					//System.out.println("ERROR: Could not connect");
-					//JOptionPane.showMessageDialog(null, e2);
+					System.out.println("ERROR: Could not connect");
+					JOptionPane.showMessageDialog(null, e2);
 				}
 				
 			}

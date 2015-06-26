@@ -48,8 +48,12 @@ public class dbConnector {
 				}
 			}
 		}
+		public static boolean getAuth (String username, String password){
+			authenticateUser(username, password);
+			return auth;
+		}
 
-		public static void authenticateUser(String username, String password){
+		public static boolean authenticateUser(String username, String password){
 				String query = "SELECT * from usernames WHERE username=? and password=?";
 				dbConnector.setQuery(query);
 				dbConnector.getConnecttion();
@@ -66,6 +70,7 @@ public class dbConnector {
 					currentUser.setLoggedIn(true);
 					//----------------------------------------------------------------------------------------------->> Log User in
 				}else{
+					auth = false;
 					JOptionPane.showMessageDialog(null, "Username and/or password is not correct, try again");
 				}
 				dbConnector.closeConnection();
@@ -74,6 +79,7 @@ public class dbConnector {
 				System.out.println("ERROR: Could not connect");
 				JOptionPane.showMessageDialog(null, e2);
 			}
+			return auth;
 		}
 		
 		public static void main(String[] args) throws SQLException{
