@@ -1,6 +1,8 @@
 package gui;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.sound.sampled.AudioFormat;
@@ -50,39 +52,36 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 	private Mixer currentMixer;
 	private PitchEstimationAlgorithm algo = PitchEstimationAlgorithm.MPM;
 
-	/**private ActionListener algoChangeListener = new ActionListener(){
-		@Override
-		public void actionPerformed(final ActionEvent e) {
-			String name = e.getActionCommand();
-			PitchEstimationAlgorithm newAlgo = PitchEstimationAlgorithm.valueOf(name);
-			algo = newAlgo;
-			try {
-				setNewMixer(currentMixer);
-			} catch (LineUnavailableException e1) {
-				e1.printStackTrace();
-			} catch (UnsupportedAudioFileException e1) {
-				e1.printStackTrace();
-			}
-	}};*/
-
 	public FreePane() {
 		setBackground(Color.LIGHT_GRAY);
 		this.setLayout(new GridLayout(0, 1));
 		add(topPanel);
 	
-		
+		//second panel- numbers
 		textArea.setEditable(false);
 		JScrollPane pitchNumPanel = new JScrollPane(textArea);
 		add(pitchNumPanel);
-		
+		TopPaneFree.inputPanel.addPropertyChangeListener("mixer",new PropertyChangeListener(){
+			@Override
+			public void propertyChange(PropertyChangeEvent arg0) {
+				try {
+					setNewMixer((Mixer) arg0.getNewValue());
+				} catch (LineUnavailableException e) {
+					e.printStackTrace();
+				} catch (UnsupportedAudioFileException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		//bottom panel- graph
 		JPanel pitchGraphPanel = new PitchDetectionPanel();
-		add(pitchGraphPanel);		
-	
+			add(pitchGraphPanel);	
+		PitchPlotPanel graph = new PitchPlotPanel();	
+			pitchGraphPanel.add(graph);
+		
 		// Start LiveGraph:
 		lg = LiveGraph.application();
 		lg.execEngine();
-		
-		PitchPlotPanel graph = new PitchPlotPanel();
 		LiveGraph.application().eventManager().registerListener(graph);
 		JPanel innerplotpanel = lg.guiManager().createPlotPanel();
 		graph.add(innerplotpanel);
@@ -109,12 +108,8 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 		//out.addDataSeries("Timestamp");	
 		
 		startMillis = -1;
-
-		
-		
-		pitchGraphPanel.add(graph);
-			
 	}
+	
 
 	private void setNewMixer(Mixer mixer) throws LineUnavailableException, UnsupportedAudioFileException {
 		if(dispatcher!= null){
