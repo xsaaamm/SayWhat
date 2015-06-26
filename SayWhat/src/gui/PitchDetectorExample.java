@@ -63,6 +63,8 @@ public class PitchDetectorExample extends JFrame implements PitchDetectionHandle
 	private AudioDispatcher dispatcher;
 	@SuppressWarnings("unused")
 	private Mixer currentMixer;
+	public static float pitch;
+	public static double timeStamp;
 	
 	private PitchEstimationAlgorithm algo;	
 	public PitchDetectorExample() {
@@ -154,8 +156,8 @@ public class PitchDetectorExample extends JFrame implements PitchDetectionHandle
 	@Override
 	public void handlePitch(PitchDetectionResult pitchDetectionResult,AudioEvent audioEvent) {
 		if(pitchDetectionResult.getPitch() != -1){
-			double timeStamp = audioEvent.getTimeStamp();
-			float pitch = pitchDetectionResult.getPitch();
+			timeStamp = audioEvent.getTimeStamp();
+			pitch = pitchDetectionResult.getPitch();
 			float probability = pitchDetectionResult.getProbability();
 			double rms = audioEvent.getRMS() * 100;
 			

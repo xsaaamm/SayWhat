@@ -20,6 +20,7 @@ public class Login extends JFrame{
 
 	private static final long serialVersionUID = 3317897313713510859L;
 	JFrame frmLoginPage;
+	JFrame mainframe;
 	static JPasswordField passwordField;
 	private JLabel lblSayWhatLogin;
 	private JLabel lblUsername;	
@@ -34,9 +35,7 @@ public class Login extends JFrame{
 	private JLabel lbSoundBar;
 	private Connection connection = null;
 
-	/**
-	 * Launch the application.
-	 */
+	//Launch the application.
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -50,20 +49,11 @@ public class Login extends JFrame{
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public Login() throws SQLException {
 		initialize(); 
-		dbConnector.getConnecttion();
-		//JOptionPane.showMessageDialog(null, "Database Connection Successful");
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
-		
 		//Frame Layout
 		frmLoginPage = new JFrame();
 		frmLoginPage.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\eclipse\\workspace\\Say What\\img\\simon icon2.png"));
@@ -140,34 +130,23 @@ public class Login extends JFrame{
 			@SuppressWarnings({ "deprecation" })
 			public void actionPerformed(ActionEvent arg0) {
 				try{
-					String query = "SELECT * from usernames WHERE username=? and password=?";
-					PreparedStatement pst = connection.prepareStatement(query);
-					pst.setString(1, usernameField.getText());
-					pst.setString(2, passwordField.getText());
+					String username = Login.usernameField.getText();
+					String password = Login.passwordField.getText();
+					dbConnector.authenticateUser(username, password);
 					
-					ResultSet result = pst.executeQuery();
-			
-					int count = 0;
-					while (result.next()){
-						count++;
-					}if (count == 1){
+					if (dbConnector.auth = true){
 						User currentUser = new User();
 						currentUser.setLoggedIn(true);
 						
-						//JOptionPane.showMessageDialog(null, "Username and Password is correct");						
 						frmLoginPage.dispose();
-						Main main1 = new Main();
-						main1.setVisible(true);
-						main1.setExtendedState(MAXIMIZED_BOTH);
-						main1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						//JOptionPane.showMessageDialog(null, "Username and Password is correct");						
+						Main.mainframe.setVisible(true);
+						Main.mainframe.setExtendedState(MAXIMIZED_BOTH);
+						Main.mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 						
-						//----------------------------------------------------------------------------------------------->> Log User in
 					}else{
 						JOptionPane.showMessageDialog(null, "Username and/or password is not correct, try again");
 					}
-					
-					result.close();
-					pst.close();
 					
 				}catch(Exception e2){
 					//System.out.println("ERROR: Could not connect");

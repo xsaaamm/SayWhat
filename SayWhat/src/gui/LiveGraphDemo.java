@@ -71,7 +71,7 @@ public void exec() {
       out.setDataValue(System.currentTimeMillis() - startMillis);
       out.setDataValue(datasetNumber);
       out.setDataValue(burstNumber);
-      out.setDataValue(Math.random());
+      //out.setDataValue(gui.PitchDetectorExample.pitch);
       
       // Write dataset to disk:
       out.writeDataSet();

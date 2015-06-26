@@ -28,7 +28,6 @@ public class User {
 		this.setLoggedIn(true);
 	}
 	public void validateUser(){
-		
 	}
 	public void logout(){
 		this.setLoggedIn(false);
@@ -54,7 +53,7 @@ public class User {
 	public String getlname() {
 		return lname;
 	}public void setlname(String lname) {
-		this.fname = lname;
+		this.lname = lname;
 	}
 	public int getrole() {
 		return role;

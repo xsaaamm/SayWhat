@@ -136,9 +136,9 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 		// Set-up the data series:
 		out.addDataSeries("Time");
 		out.addDataSeries("Pitch");	
-		out.addDataSeries("Probability");
-		out.addDataSeries("RMS");
-		out.addDataSeries("Timestamp");	
+		//out.addDataSeries("Probability");
+		//out.addDataSeries("RMS");
+		//out.addDataSeries("Timestamp");	
 		
 		startMillis = -1;
 
@@ -206,8 +206,8 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 			}
 			timeStamp = audioEvent.getTimeStamp();
 			pitch = pitchDetectionResult.getPitch();
-			probability = pitchDetectionResult.getProbability();
-			rms = audioEvent.getRMS() * 100;
+			//probability = pitchDetectionResult.getProbability();
+			//rms = audioEvent.getRMS() * 100;
 			
 			//test will be deleted 
 			String message = String.format("Pitch detected at %.2fs: %.2fHz ( %.2f probability, RMS: %.5f )\n", timeStamp,pitch,probability,rms);
@@ -220,9 +220,6 @@ public class FreePane extends JPanel implements PitchDetectionHandler {
 			// Set-up the data values:
 			out.setDataValue(System.currentTimeMillis() - startMillis);
 			out.setDataValue(pitch);
-			out.setDataValue(probability);
-			out.setDataValue(rms);
-			out.setDataValue(timeStamp);		
 
 			// Write dataset to disk:			
 			out.writeDataSet();

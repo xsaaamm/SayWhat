@@ -23,7 +23,7 @@ import javax.swing.UIManager;
 public class Main extends JFrame {
 	
 	private static final long serialVersionUID = 7837880633918248807L;
-	static Main mainframe = new Main();
+	static Main mainframe = new Main();;
 	private JPanel mainPane= new JPanel();
 	HomePane homepane = new HomePane();
 	FreePane freepane = new FreePane();
@@ -33,9 +33,6 @@ public class Main extends JFrame {
 	RecordsPane recordspane = new RecordsPane();
 	HelpPane helppane = new HelpPane();
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -49,10 +46,11 @@ public class Main extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
-	public Main() {
+	public Main(){
+		initialize();
+	}
+	
+	public void initialize() {
 		getContentPane().setBackground(new Color(0, 0, 0));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 959, 660);
@@ -65,7 +63,6 @@ public class Main extends JFrame {
 		mainPane.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		mainPane.setLayout(new BorderLayout(0, 0));
 
-		
 		JPanel topPanel = new JPanel();
 		topPanel.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
 		mainPane.add(topPanel, BorderLayout.NORTH);

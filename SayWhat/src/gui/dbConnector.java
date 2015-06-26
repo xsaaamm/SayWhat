@@ -9,18 +9,17 @@ public class dbConnector {
 		static Connection conn = null;
 		static ResultSet result;
 		static String query;
-		static String host;
-		static String pass;
-		static String root;
+		static private String host = "jdbc:mysql://localhost:3306/saywhatdb";
+		static private String pass = "";
+		static private String root = "root";
 		static boolean auth;
+		static int count = 0;
+		static int count2 = 0;
 		
 		public dbConnector(){
-			host = "jdbc:mysql://localhost:3306/saywhatdb";
-			pass = "";
-			root = "root";
 		}
 		
-		public static void getConnecttion(){
+		public static Connection getConnecttion(){
 			try {
 				conn = DriverManager.getConnection(host, root, pass);	
 				stmt = conn.prepareStatement(query);			
@@ -28,6 +27,7 @@ public class dbConnector {
 				System.out.println("ERROR: Could not connect to the Database");
 				e.printStackTrace();
 			}
+			return conn;
 		}
 		
 		public static void setQuery(String query1){
@@ -42,33 +42,25 @@ public class dbConnector {
 			if(conn != null){
 				try{
 					conn.close();
-					JOptionPane.showMessageDialog(null, "Connection Closed");
+					//JOptionPane.showMessageDialog(null, "Connection Closed");
 				}catch(SQLException se){
 					se.printStackTrace();
 				}
 			}
 		}
-		public static boolean getAuth(){
-			authenticateUser();
-			return auth;
-		}
-		@SuppressWarnings("deprecation")
-		public static void authenticateUser(){
-			
+
+		public static void authenticateUser(String username, String password){
 				String query = "SELECT * from usernames WHERE username=? and password=?";
 				dbConnector.setQuery(query);
 				dbConnector.getConnecttion();
-				String username = Login.usernameField.getText();
-				String password = Login.passwordField.getText();
 			try{
 				stmt.setString(1, username);
 				stmt.setString(2, password);
 				dbConnector.getResult();
 				
-				int count = 0;
 				while (result.next()){	
-				   count++;
-				}if (count == 1){
+				   count2++;
+				}if (count2 == 1){
 					auth = true;
 					User currentUser = new User();
 					currentUser.setLoggedIn(true);
@@ -85,15 +77,13 @@ public class dbConnector {
 		}
 		
 		public static void main(String[] args) throws SQLException{
-			/**dbConnector dbConnector = new dbConnector();
-			dbConnector.setQuery("SELECT * from users");
-			dbConnector.getConnecttion();
-			dbConnector.getResult();
-			int count = 0;
+			setQuery("SELECT * from users");
+			getConnecttion();
+			getResult();
 			while (result.next()){	
 			   System.out.println(result.getString("fname"));
 			   count++;
-			}*/
+			}
 			}
 }
 
