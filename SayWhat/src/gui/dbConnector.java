@@ -16,12 +16,9 @@ public class dbConnector {
 		static int count = 0;
 		static int count2 = 0;
 		
-		public dbConnector(){
-		}
-		
-		public static Connection getConnecttion(){
+		public static Connection getConnection(){
 			try {
-				conn = DriverManager.getConnection(host, root, pass);	
+				conn = DriverManager.getConnection(host, root, pass);
 				stmt = conn.prepareStatement(query);			
 			}catch (SQLException e) {
 				System.out.println("ERROR: Could not connect to the Database");
@@ -35,6 +32,7 @@ public class dbConnector {
 		}
 		
 		public static ResultSet getResult() throws SQLException{
+			
 			return result = stmt.executeQuery();
 		}
 		
@@ -56,7 +54,7 @@ public class dbConnector {
 		public static boolean authenticateUser(String username, String password){
 				String query = "SELECT * from usernames WHERE username=? and password=?";
 				dbConnector.setQuery(query);
-				dbConnector.getConnecttion();
+				dbConnector.getConnection();
 			try{
 				stmt.setString(1, username);
 				stmt.setString(2, password);
@@ -83,13 +81,15 @@ public class dbConnector {
 		}
 		
 		public static void main(String[] args) throws SQLException{
+			/*
 			setQuery("SELECT * from users");
-			getConnecttion();
+			getConnection();
 			getResult();
 			while (result.next()){	
 			   System.out.println(result.getString("fname"));
 			   count++;
 			}
+			*/
 			}
 }
 

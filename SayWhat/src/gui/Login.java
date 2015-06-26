@@ -1,12 +1,15 @@
 package gui;
 import java.sql.*;
+
 import javax.swing.*;
+
 import java.awt.EventQueue;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
+
 import javax.swing.ImageIcon;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
@@ -32,9 +35,8 @@ public class Login extends JFrame{
 	private JButton btnUserPic2;
 	private JButton btnUserPic3;
 	private JLabel lbSoundBar;
-	private Connection connection = null;
 	private boolean auth = false;
-	//Launch the application.
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -128,40 +130,30 @@ public class Login extends JFrame{
 		btnLogin.addActionListener(new ActionListener() {
 			@SuppressWarnings({ "deprecation" })
 			public void actionPerformed(ActionEvent arg0) {
-				try{
-					String username = Login.usernameField.getText();
-					String password = Login.passwordField.getText();
-					auth = dbConnector.getAuth(username, password);
-					
-					if (auth){
-						User currentUser = new User();
-						currentUser.setLoggedIn(true);
-						
-						frmLoginPage.dispose();
-						//JOptionPane.showMessageDialog(null, "Username and Password is correct");						
-						Main.mainframe.setVisible(true);
-						Main.mainframe.setExtendedState(MAXIMIZED_BOTH);
-						Main.mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-						
-					}else{
-						JOptionPane.showMessageDialog(null, "Username and/or password is not correct, please try again");
-					}
-					
-				}catch(Exception e2){
-					System.out.println("ERROR: Could not connect");
-					JOptionPane.showMessageDialog(null, e2);
-				}
-				
+				String username = Login.usernameField.getText();
+				String password = Login.passwordField.getText();
+				auth = dbConnector.getAuth(username, password);					
+				if (auth){
+					User currentUser = new User();
+					currentUser.setLoggedIn(true);
+					frmLoginPage.dispose();				
+					Main.mainframe.setVisible(true);
+					Main.mainframe.setExtendedState(MAXIMIZED_BOTH);
+					Main.mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);					
+				}else{
+					JOptionPane.showMessageDialog(null, "Username and/or password is not correct, please try again");
+				}								
 			}
 		});
 
-		//--Sound Bar Image 	
+		//Sound Bar Image 	
 		lbSoundBar = new JLabel("");
 		lbSoundBar.setHorizontalAlignment(SwingConstants.CENTER);
 		lbSoundBar.setIcon(new ImageIcon("C:\\Users\\barretts\\github\\saywhat\\saywhat\\SayWhat\\img\\lblSoundBar.png"));
 		lbSoundBar.setBounds(0, 389, 707, 192);
 		frmLoginPage.getContentPane().add(lbSoundBar);
 		
+		//Panel to hold photo buttons
 		panel = new JPanel();
 		panel.setForeground(Color.WHITE);
 		panel.setBackground(Color.BLACK);
@@ -171,75 +163,75 @@ public class Login extends JFrame{
 		panel.setLayout(null);
 		panel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		
-		//--User Photo Button_1
+		//User Photo Button_1 - sam
 		btnUserPic1 = new JButton("");
 		btnUserPic1.setBounds(6, 16, 105, 105);
 		panel.add(btnUserPic1);
 		btnUserPic1.setIcon(new ImageIcon("img/sam.jpg"));
 		btnUserPic1.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		//--User Photo Button_2
+		//User Photo Button_2 - bobby
 		btnUserPic2 = new JButton("");
 		btnUserPic2.setBounds(110, 16, 105, 105);
 		panel.add(btnUserPic2);
 		btnUserPic2.setIcon(new ImageIcon("img/bobby.jpg"));
 		btnUserPic2.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		//--User Photo Button_3
+		//User Photo Button_3 - toure
 		btnUserPic3 = new JButton("");
 		btnUserPic3.setBounds(214, 16, 105, 105);
 		panel.add(btnUserPic3);
 		btnUserPic3.setIcon(new ImageIcon("img/toure.jpg"));
 		btnUserPic3.setHorizontalAlignment(SwingConstants.CENTER);
-		//--User button clicked
+		
+		//User button clicked - toure
 		btnUserPic3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dbConnector.setQuery("SELECT * from usernames WHERE user_id_fk=3");
+				dbConnector.getConnection();
+				ResultSet result;
 				try {
-					connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/saywhatdb", "root", "");
-					Statement stmt = connection.createStatement();
-					ResultSet result = stmt.executeQuery("SELECT * from usernames WHERE user_id_fk=3");
+					result = dbConnector.getResult();
 					while (result.next()){
 						usernameField.setText(result.getString("username"));
-					}
-					
-			}catch (SQLException e2){
-				JOptionPane.showMessageDialog(null, "User not found, please enter manually");
-				}
+					}	
+				}catch(SQLException e1){
+					e1.printStackTrace();
+				}	
 			}
 		});
-		//--User button clicked
+		
+		//User button clicked - bobby
 		btnUserPic2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dbConnector.setQuery("SELECT * from usernames WHERE user_id_fk=1");
+				dbConnector.getConnection();
 				try {
-					connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/saywhatdb", "root", "");
-					Statement stmt = connection.createStatement();
-					ResultSet result = stmt.executeQuery("SELECT * from usernames WHERE user_id_fk=1");
+					ResultSet result = dbConnector.getResult();
 					while (result.next()){
 						usernameField.setText(result.getString("username"));
 					}
-					
-			}catch (SQLException e2){
-				JOptionPane.showMessageDialog(null, "User not found, please enter manually");
+				}catch(SQLException e2){
+					JOptionPane.showMessageDialog(null, "User not found, please enter manually");
 				}
 			}
 		});
-		//--User button1 clicked
+		
+		//User button1 clicked - sam
 		btnUserPic1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/saywhatdb", "root", "");
-					Statement stmt = connection.createStatement();
-					ResultSet result = stmt.executeQuery("SELECT * from usernames WHERE user_id_fk=2");
+					dbConnector.setQuery("SELECT * from usernames WHERE user_id_fk=2");
+					dbConnector.getConnection();
+					ResultSet result = dbConnector.getResult();
 					while (result.next()){
 						usernameField.setText(result.getString("username"));
-					}
-					
+					}					
 				}catch (SQLException e2){
 					JOptionPane.showMessageDialog(null, "User not found, please enter manually");
 				}
 			}
 		});
-
 	}
 }
 
