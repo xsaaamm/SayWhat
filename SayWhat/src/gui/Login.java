@@ -65,7 +65,7 @@ public class Login extends JFrame{
 		frmLoginPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmLoginPage.getContentPane().setLayout(null);
 		
-		//--Say What Title
+		//Say What Title
 		lblSayWhatLogin = new JLabel("Say What!? Login");
 		lblSayWhatLogin.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSayWhatLogin.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -73,20 +73,20 @@ public class Login extends JFrame{
 		lblSayWhatLogin.setBounds(0, 0, 707, 41);
 		frmLoginPage.getContentPane().add(lblSayWhatLogin);
 		
-		//--Username Label
+		//Username Label
 		lblUsername = new JLabel("Username");
 		lblUsername.setForeground(new Color(154, 205, 50));
 		lblUsername.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblUsername.setBounds(206, 210, 69, 19);
 		frmLoginPage.getContentPane().add(lblUsername);
 		
-		//--Username Field
+		//Username Field
 		usernameField = new JTextField();
 		usernameField.setBounds(285, 211, 221, 20);
 		frmLoginPage.getContentPane().add(usernameField);
 		usernameField.setColumns(10);
 		
-		//--Password Label
+		//Password Label
 		lblPassword = new JLabel("Password");
 		lblPassword.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblPassword.setForeground(new Color(154, 205, 50));
@@ -94,7 +94,7 @@ public class Login extends JFrame{
 		lblPassword.setBounds(206, 243, 90, 19);
 		frmLoginPage.getContentPane().add(lblPassword);
 		
-		//--Password Field
+		//Password Field
 		passwordField = new JPasswordField("1234");
 		passwordField.setEchoChar('*');
 		passwordField.setBounds(285, 242, 221, 20);
@@ -140,8 +140,6 @@ public class Login extends JFrame{
 					Main.mainframe.setVisible(true);
 					Main.mainframe.setExtendedState(MAXIMIZED_BOTH);
 					Main.mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);					
-				}else{
-					JOptionPane.showMessageDialog(null, "Username and/or password is not correct, please try again");
 				}								
 			}
 		});

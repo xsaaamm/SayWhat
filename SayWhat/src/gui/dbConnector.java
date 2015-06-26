@@ -23,8 +23,7 @@ public class dbConnector {
 			}catch (SQLException e) {
 				System.out.println("ERROR: Could not connect to the Database");
 				e.printStackTrace();
-			}
-			return conn;
+			}return conn;
 		}
 		
 		public static void setQuery(String query1){
@@ -32,7 +31,6 @@ public class dbConnector {
 		}
 		
 		public static ResultSet getResult() throws SQLException{
-			
 			return result = stmt.executeQuery();
 		}
 		
@@ -52,9 +50,9 @@ public class dbConnector {
 		}
 
 		public static boolean authenticateUser(String username, String password){
-				String query = "SELECT * from usernames WHERE username=? and password=?";
-				dbConnector.setQuery(query);
-				dbConnector.getConnection();
+			String query = "SELECT * from usernames WHERE username=? and password=?";
+			dbConnector.setQuery(query);
+			dbConnector.getConnection();
 			try{
 				stmt.setString(1, username);
 				stmt.setString(2, password);
@@ -69,10 +67,9 @@ public class dbConnector {
 					//----------------------------------------------------------------------------------------------->> Log User in
 				}else{
 					auth = false;
-					JOptionPane.showMessageDialog(null, "Username and/or password is not correct, try again");
+					JOptionPane.showMessageDialog(null, "Incorrect username and/or password, please try again.");
 				}
-				dbConnector.closeConnection();
-				
+				dbConnector.closeConnection();				
 			}catch(Exception e2){
 				System.out.println("ERROR: Could not connect");
 				JOptionPane.showMessageDialog(null, e2);
