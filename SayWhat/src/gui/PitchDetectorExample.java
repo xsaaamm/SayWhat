@@ -38,8 +38,6 @@ import javax.sound.sampled.TargetDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -53,20 +51,16 @@ import be.tarsos.dsp.pitch.PitchProcessor.PitchEstimationAlgorithm;
 
 public class PitchDetectorExample extends JFrame implements PitchDetectionHandler {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3501426880288136245L;
 
-	private final JTextArea textArea;
-
-	private AudioDispatcher dispatcher;
 	@SuppressWarnings("unused")
 	private Mixer currentMixer;
+	static AudioDispatcher dispatcher;
 	public static float pitch;
 	public static double timeStamp;
-	
+	public static float probability;
 	private PitchEstimationAlgorithm algo;	
+	
 	public PitchDetectorExample() throws LineUnavailableException {
 		this.setLayout(new GridLayout(0, 1));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -81,23 +75,14 @@ public class PitchDetectorExample extends JFrame implements PitchDetectionHandle
 						try {
 							setNewMixer((Mixer) arg0.getNewValue());
 						} catch (LineUnavailableException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (UnsupportedAudioFileException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
 				});
 		
-		algo = PitchEstimationAlgorithm.MPM;
-		
-		//JPanel pitchDetectionPanel = new PitchDetectionPanel(algoChangeListener);
-		//add(pitchDetectionPanel);
-		
-		textArea = new JTextArea();
-		textArea.setEditable(false);
-		add(new JScrollPane(textArea));
+		algo = PitchEstimationAlgorithm.MPM;	
 	}
 	
 	private void setNewMixer(Mixer mixer) throws LineUnavailableException,
@@ -112,10 +97,9 @@ public class PitchDetectorExample extends JFrame implements PitchDetectionHandle
 		int bufferSize = 1024;
 		int overlap = 0;
 		
-		textArea.append("Started listening with " + Shared.toLocalString(mixer.getMixerInfo().getName()) + "\n");
+		FreePane.textArea.append("Started listening with " + Shared.toLocalString(mixer.getMixerInfo().getName()) + "\n");
 
-		final AudioFormat format = new AudioFormat(sampleRate, 16, 1, true,
-				true);
+		final AudioFormat format = new AudioFormat(sampleRate, 16, 1, true,true);
 		final DataLine.Info dataLineInfo = new DataLine.Info(
 				TargetDataLine.class, format);
 		TargetDataLine line;
@@ -150,7 +134,6 @@ public class PitchDetectorExample extends JFrame implements PitchDetectionHandle
 				try {
 					frame = new PitchDetectorExample();
 				} catch (LineUnavailableException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				frame.pack();
@@ -164,17 +147,14 @@ public class PitchDetectorExample extends JFrame implements PitchDetectionHandle
 		if(pitchDetectionResult.getPitch() != -1){
 			timeStamp = audioEvent.getTimeStamp();
 			pitch = pitchDetectionResult.getPitch();
-			float probability = pitchDetectionResult.getProbability();
-			double rms = audioEvent.getRMS() * 100;
+			probability = pitchDetectionResult.getProbability();
 			
 			for (float i=0; i<=pitch; i+=5){
-				textArea.append("|");
-			}String message = String.format("Pitch detected at %.2fs: %.2fHz ( %.2f probability, RMS: %.5f )\n", timeStamp,pitch,probability,rms);
-			textArea.append(message);		
+				FreePane.textArea.append("|");
+			}String message = String.format("Pitch detected at %.2fs: %.2fHz ( %.2f probability, RMS: %.5f )\n", timeStamp,pitch,probability);
+			FreePane.textArea.append(message);		
 			
-			textArea.setCaretPosition(textArea.getDocument().getLength());
-			
-			
+			FreePane.textArea.setCaretPosition(FreePane.textArea.getDocument().getLength());	
 		}
 	}
 }

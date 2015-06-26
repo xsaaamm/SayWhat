@@ -11,7 +11,6 @@ public class GraphPanelFree extends JPanel {
 
 	private static final long serialVersionUID = 5889920481723493490L;
 	private LiveGraph lg;
-	private PitchPlotPanel graph = new PitchPlotPanel();
 	private static JTextArea textArea_1;
 	private long startMillis;
 	private DataStreamWriter out;
@@ -22,15 +21,15 @@ public class GraphPanelFree extends JPanel {
 	
 	public GraphPanelFree() {
 		initialize();
-		getData();
+		//getData();
 	}
 	
 	private void initialize(){
-		add(graph);	
-		
 		// Start LiveGraph:
 		lg = LiveGraph.application();
 		lg.execEngine();
+		
+		PitchPlotPanel graph = new PitchPlotPanel();
 		LiveGraph.application().eventManager().registerListener(graph);
 		JPanel innerplotpanel = lg.guiManager().createPlotPanel();
 		graph.add(innerplotpanel);
@@ -62,13 +61,15 @@ public class GraphPanelFree extends JPanel {
 		if (startMillis == -1){
 			startMillis = System.currentTimeMillis();
 		}
+		add(graph);	
+		getData();
 	}
 	private void getData(){
-		while(FreePane.dispatcher != null){
+		while(PitchDetectorExample.dispatcher != null){
 			for (int b = 0; b >= 0; b++) {
 				// Set-up the data values:
 				out.setDataValue(System.currentTimeMillis() - startMillis);
-				out.setDataValue(FreePane.pitch);
+				out.setDataValue(PitchDetectorExample.pitch);
 		
 				// Write dataset to disk:			
 				out.writeDataSet();

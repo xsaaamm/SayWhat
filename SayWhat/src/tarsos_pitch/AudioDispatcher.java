@@ -118,6 +118,7 @@ public class AudioDispatcher implements Runnable {
 	 *            How much consecutive buffers overlap (in samples). Half of the
 	 *            AudioBufferSize is common (512, 1024) for an FFT.
 	 */
+
 	public AudioDispatcher(final TarsosDSPAudioInputStream stream, final int audioBufferSize, final int bufferOverlap){
 		
 		audioProcessors = new ArrayList<AudioProcessor>();
@@ -125,7 +126,6 @@ public class AudioDispatcher implements Runnable {
 
 		format = audioInputStream.getFormat();
 		
-			
 		setStepSizeAndOverlap(audioBufferSize, bufferOverlap);
 		
 		audioEvent = new AudioEvent(format);
@@ -215,6 +215,7 @@ public class AudioDispatcher implements Runnable {
 		LOG.fine("Remove an audioprocessor to the list of processors: " + audioProcessor.toString());
 	}
 
+	@Override
 	public void run() {
 		
 		int bytesRead = 0;
