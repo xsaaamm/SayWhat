@@ -139,7 +139,12 @@ public class Login extends JFrame{
 					frmLoginPage.dispose();				
 					Main.mainframe.setVisible(true);
 					Main.mainframe.setExtendedState(MAXIMIZED_BOTH);
-					Main.mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);					
+					Main.mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					
+					//Log User in - Create instance of current user
+					/**
+					 * Must Create Code to create instane of current user
+					 */
 				}								
 			}
 		});
@@ -185,8 +190,12 @@ public class Login extends JFrame{
 		//User button clicked - toure
 		btnUserPic3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dbConnector.setQuery("SELECT * from usernames WHERE user_id_fk=3");
-				dbConnector.getConnection();
+				dbConnector.getConnection();				
+				try {
+					dbConnector.setQuery("SELECT * from usernames WHERE user_id_fk=3");
+				} catch (SQLException e2) {
+					e2.printStackTrace();
+				}
 				ResultSet result;
 				try {
 					result = dbConnector.getResult();
@@ -202,8 +211,12 @@ public class Login extends JFrame{
 		//User button clicked - bobby
 		btnUserPic2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dbConnector.setQuery("SELECT * from usernames WHERE user_id_fk=1");
 				dbConnector.getConnection();
+				try {
+					dbConnector.setQuery("SELECT * from usernames WHERE user_id_fk=1");
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
 				try {
 					ResultSet result = dbConnector.getResult();
 					while (result.next()){
@@ -218,9 +231,9 @@ public class Login extends JFrame{
 		//User button1 clicked - sam
 		btnUserPic1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dbConnector.getConnection();
 				try {
 					dbConnector.setQuery("SELECT * from usernames WHERE user_id_fk=2");
-					dbConnector.getConnection();
 					ResultSet result = dbConnector.getResult();
 					while (result.next()){
 						usernameField.setText(result.getString("username"));
