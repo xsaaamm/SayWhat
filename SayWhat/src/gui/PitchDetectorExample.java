@@ -67,7 +67,7 @@ public class PitchDetectorExample extends JFrame implements PitchDetectionHandle
 	public static double timeStamp;
 	
 	private PitchEstimationAlgorithm algo;	
-	public PitchDetectorExample() {
+	public PitchDetectorExample() throws LineUnavailableException {
 		this.setLayout(new GridLayout(0, 1));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("Pitch Detector");
@@ -146,7 +146,13 @@ public class PitchDetectorExample extends JFrame implements PitchDetectionHandle
 				} catch (Exception e) {
 					//ignore failure to set default look en feel;
 				}
-				JFrame frame = new PitchDetectorExample();
+				JFrame frame = null;
+				try {
+					frame = new PitchDetectorExample();
+				} catch (LineUnavailableException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				frame.pack();
 				frame.setVisible(true);
 			}
