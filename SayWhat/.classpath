@@ -5,8 +5,5 @@
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.35-bin.jar"/>
 	<classpathentry kind="lib" path="lib/TarsosDSP-2.2-bin.jar"/>
 	<classpathentry kind="lib" path="lib/TarsosDSP-2.2.jar"/>
-	<classpathentry kind="lib" path="forms-1.3.0.jar" sourcepath="forms-1.3.0-src.zip"/>
-	<classpathentry kind="lib" path="lib/LiveGraph.2.0.beta01.Complete.jar"/>
-	<classpathentry kind="lib" path="lib/SoftNetConsultUtils.2.02.slim.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
